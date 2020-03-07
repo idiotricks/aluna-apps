@@ -1,16 +1,30 @@
 export default {
+  data () {
+    return {
+      customer: {},
+      customers: [],
+      customerCount: 0,
+      customerParams: {
+        page: 1,
+        search: '',
+        is_publish: true
+      }
+    }
+  },
   methods: {
-    async customerAll () {
+    async customerAll (isPublish) {
+      let url = `${process.env.BASE_URL}/customers/`
       const config = {
+        params: this.customerParams,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': localStorage.getItem('token')
         }
       }
-      console.log(config)
-      const url = `${process.env.BASE_URL}/customers/`
+
       const { data } = await this.$http.get(url, config)
-      return data
+      this.customers = data.results
+      this.customerCount = data.count
     },
     async customerNew () {
       const config = {
@@ -22,7 +36,7 @@ export default {
       console.log(config)
       const url = `${process.env.BASE_URL}/customers/`
       const { data } = await this.$http.post(url, null, config)
-      return data
+      this.customer = data
     },
     async customerGet (id) {
       const config = {
@@ -33,7 +47,7 @@ export default {
       }
       const url = `${process.env.BASE_URL}/customers/${id}/`
       const { data } = await this.$http.get(url, config)
-      return data
+      this.customer = data
     },
     async customerEdit (id, field, value) {
       const config = {
@@ -47,7 +61,7 @@ export default {
       }
       const url = `${process.env.BASE_URL}/customers/${id}/`
       const { data } = await this.$http.patch(url, payload, config)
-      return data
+      this.customer = data
     },
     async customerDelete (id) {
       const config = {
@@ -57,8 +71,8 @@ export default {
         }
       }
       const url = `${process.env.BASE_URL}/customers/${id}/`
-      const { data } = await this.$http.delete(url, config)
-      return data
+      await this.$http.delete(url, config)
+      this.customer = null
     },
     async customerPublish (id) {
       const config = {
@@ -69,7 +83,7 @@ export default {
       }
       const url = `${process.env.BASE_URL}/customers/${id}/publish/`
       const { data } = await this.$http.post(url, null, config)
-      return data
+      this.customer = data
     },
     async customerDraft (id) {
       const config = {
@@ -80,7 +94,18 @@ export default {
       }
       const url = `${process.env.BASE_URL}/customers/${id}/draft/`
       const { data } = await this.$http.post(url, null, config)
-      return data
+      this.customer = data
+    },
+    setPageCustomer (page) {
+      this.customerParams.page = page
+    },
+    setSearchCustomer (search) {
+      this.customerParams.search = search
+      this.customerParams.page = 1
+    },
+    setPublishCustomer (publish) {
+      this.customerParams.is_publish = publish
+      this.customerParams.page = 1
     }
   }
 }

@@ -1,13 +1,18 @@
 <template>
-  <div>
+  <div v-if="init">
     <navbar-template app="Customer Manager">
       <b-nav-item-dropdown text="Actions" right>
         <b-dropdown-item @click="onNewCustomer" href="#">New Customer</b-dropdown-item>
       </b-nav-item-dropdown>
     </navbar-template>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 mt-4">
+      <div class="row mt-4">
+        <div class="col-md-3">
+          <b-card header="Search Customer">
+            <search-template @onSearch="onSearchCustomer" @onSearchPublish="onSearchPublishCustomer" />
+          </b-card>
+        </div>
+        <div class="col-md-9">
           <b-modal
             ref="edit-modal-customer"
             :title="customer ? customer.name : ''"
@@ -40,10 +45,15 @@
               </b-button>
             </b-button-group>
           </b-modal>
-          <b-card title="Customers">
+          <b-card header="Customers">
             <customer-list
               :customers="customers"
               @onSelected="onSelectedCustomer"
+            />
+            <pagination-template
+              @onPaginate="onPaginateCustomer"
+              :currentPage="customerParams.page"
+              :count="customerCount"
             />
           </b-card>
         </div>
@@ -54,6 +64,8 @@
 
 <script>
 import NavbarTemplate from '@/templates/NavbarTemplate'
+import SearchTemplate from '@/templates/SearchTemplate'
+import PaginationTemplate from '@/templates/PaginationTemplate'
 
 import CustomerList from '@/components/customers/CustomerList'
 import CustomerDetail from '@/components/customers/CustomerDetail'
@@ -64,17 +76,13 @@ export default {
   name: 'customer-list-view',
   data () {
     return {
-      customers: [],
-      customer: null,
-      settings: {
-        showCustomerList: false,
-        showCustomerDetail: false,
-        showCustomerEdit: false
-      }
+      init: false
     }
   },
   components: {
     'navbar-template': NavbarTemplate,
+    'search-template': SearchTemplate,
+    'pagination-template': PaginationTemplate,
     'customer-list': CustomerList,
     'customer-detail': CustomerDetail,
     'customer-edit': CustomerEdit
@@ -84,15 +92,27 @@ export default {
   ],
   methods: {
     async onAllCustomer () {
-      const { results } = await this.customerAll()
-      this.customers = results
+      await this.customerAll()
+      this.init = true
+    },
+    async onSearchCustomer (search) {
+      this.setSearchCustomer(search)
+      this.onAllCustomer()
+    },
+    async onSearchPublishCustomer (value) {
+      this.setPublishCustomer(value)
+      this.onAllCustomer()
+    },
+    async onPaginateCustomer (page) {
+      this.setPageCustomer(page)
+      this.onAllCustomer()
     },
     async onNewCustomer () {
       await this.customerNew()
-      this.onAllCustomer()
+      await this.onAllCustomer()
     },
     async onSelectedCustomer (customer) {
-      this.customer = await customer
+      this.customer = customer
       this._onEditModalCustomer(true)
     },
     async onDeletedCustomer (id) {
@@ -123,7 +143,7 @@ export default {
     }
   },
   async mounted () {
-    this.onAllCustomer()
+    await this.onAllCustomer()
   }
 }
 </script>
