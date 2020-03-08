@@ -5,6 +5,11 @@ distro-distro pakaian.
 
 ![Aluna](./aluna.png)
 
+## Aluna API
+Jangan lupa untuk mengunduh dan menginstal Aluna API:
+
+https://github.com/idiotricks/aluna-api
+
 ## Build Setup
 Clone project ini ke direktori local Anda, lalu
 masuk ke direktori project dan ketik:
