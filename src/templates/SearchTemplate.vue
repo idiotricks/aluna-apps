@@ -11,7 +11,11 @@
       >
     </div>
     <div class="form-group">
-      <b-form-select @change="onSearchPublish" v-model="isPublish" :options="options"></b-form-select>
+      <b-form-select
+        @change="onSearchPublish"
+        v-model="isPublish"
+        :options="options"
+      ></b-form-select>
     </div>
   </div>
 </template>

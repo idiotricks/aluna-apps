@@ -12,7 +12,7 @@ export default {
     }
   },
   methods: {
-    async customerAll (isPublish) {
+    async customerAll () {
       let url = `${process.env.BASE_URL}/customers/`
       const config = {
         params: this.customerParams,
