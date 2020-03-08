@@ -1,8 +1,13 @@
 # aluna-apps
+Aluna adalah sistem informasi stock management yang
+dirancang khusus untuk aplikasi kelola stok untuk
+distro-distro pakaian.
 
-> Stock Management System
+![Aluna](./aluna.png)
 
 ## Build Setup
+Clone project ini ke direktori local Anda, lalu
+masuk ke direktori project dan ketik:
 
 ``` bash
 # install dependencies
@@ -18,4 +23,4 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+

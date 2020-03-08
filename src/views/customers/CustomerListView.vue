@@ -9,7 +9,10 @@
       <div class="row mt-4">
         <div class="col-md-3">
           <b-card header="Search Customer">
-            <search-template @onSearch="onSearchCustomer" @onSearchPublish="onSearchPublishCustomer" />
+            <search-template
+              @onSearch="onSearchCustomer"
+              @onSearchPublish="onSearchPublishCustomer"
+            />
           </b-card>
         </div>
         <div class="col-md-9">
@@ -124,15 +127,16 @@ export default {
       }
     },
     async onEditedCustomer (id, field, value) {
-      this.customerEdit(id, field, value)
+      await this.customerEdit(id, field, value)
+      await this.onAllCustomer()
     },
     async onPublishCustomer (id) {
-      this.customer = await this.customerPublish(id)
-      this.onAllCustomer()
+      await this.customerPublish(id)
+      await this.onAllCustomer()
     },
     async onDraftCustomer (id) {
-      this.customer = await this.customerDraft(id)
-      this.onAllCustomer()
+      await this.customerDraft(id)
+      await this.onAllCustomer()
     },
     _onEditModalCustomer (show) {
       if (show) {

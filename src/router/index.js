@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import AuthLoginView from '@/views/auths/AuthLoginView'
 import DashboardMainView from '@/views/dashboards/DashboardMainView'
 import CustomerListView from '@/views/customers/CustomerListView'
+import SupplierListView from '@/views/suppliers/SupplierListView'
 
 Vue.use(Router)
 
@@ -28,6 +29,14 @@ const routes = new Router({
       path: '/customers',
       name: 'customer-list-voew',
       component: CustomerListView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/suppliers',
+      name: 'supplier-list-voew',
+      component: SupplierListView,
       meta: {
         requiresAuth: true
       }

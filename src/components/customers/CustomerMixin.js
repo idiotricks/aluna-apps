@@ -7,7 +7,7 @@ export default {
       customerParams: {
         page: 1,
         search: '',
-        is_publish: true
+        is_publish: null
       }
     }
   },

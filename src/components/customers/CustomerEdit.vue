@@ -63,7 +63,7 @@ export default {
   watch: {
     customer: {
       handler (n, o) {
-        this.obj = Object.assign({}, n)
+        this.obj = JSON.parse(JSON.stringify(n))
       },
       deep: true
     }

@@ -7,12 +7,12 @@ export default {
       supplierParams: {
         page: 1,
         search: '',
-        is_publish: true
+        is_publish: null
       }
     }
   },
   methods: {
-    async supplierAll() {
+    async supplierAll () {
       let url = `${process.env.BASE_URL}/suppliers/`
       const config = {
         params: this.supplierParams,
@@ -22,7 +22,7 @@ export default {
         }
       }
 
-      const { data } = await this.$http.getUrl(url, config)
+      const { data } = await this.$http.get(url, config)
       this.suppliers = data.results
       this.supplierCount = data.count
     },
@@ -33,7 +33,7 @@ export default {
           'Authorization': localStorage.getItem('token')
         }
       }
-
+      console.log(config)
       const url = `${process.env.BASE_URL}/suppliers/`
       const { data } = await this.$http.post(url, null, config)
       this.supplier = data
@@ -65,16 +65,21 @@ export default {
     },
     async supplierDelete (id) {
       const config = {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
       }
       const url = `${process.env.BASE_URL}/suppliers/${id}/`
       await this.$http.delete(url, config)
+      this.supplier = null
     },
     async supplierPublish (id) {
       const config = {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
       }
       const url = `${process.env.BASE_URL}/suppliers/${id}/publish/`
       const { data } = await this.$http.post(url, null, config)

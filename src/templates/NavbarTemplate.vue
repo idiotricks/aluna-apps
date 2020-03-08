@@ -8,8 +8,8 @@
       <b-collapse id="nav-collapse" is-nav class="container-fluid">
         <b-navbar-nav>
           <b-nav-item-dropdown text="Master">
-            <b-dropdown-item href="#">Customer</b-dropdown-item>
-            <b-dropdown-item href="#">Supplier</b-dropdown-item>
+            <b-dropdown-item to="customers">Customer</b-dropdown-item>
+            <b-dropdown-item to="suppliers">Supplier</b-dropdown-item>
             <b-dropdown-item href="#">Product</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Stock">
