@@ -10,7 +10,7 @@
           <b-nav-item-dropdown text="Master">
             <b-dropdown-item to="customers">Customer</b-dropdown-item>
             <b-dropdown-item to="suppliers">Supplier</b-dropdown-item>
-            <b-dropdown-item href="#">Product</b-dropdown-item>
+            <b-dropdown-item to="products">Product</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Stock">
             <b-dropdown-item href="#">Stock In</b-dropdown-item>

@@ -4,6 +4,7 @@ import AuthLoginView from '@/views/auths/AuthLoginView'
 import DashboardMainView from '@/views/dashboards/DashboardMainView'
 import CustomerListView from '@/views/customers/CustomerListView'
 import SupplierListView from '@/views/suppliers/SupplierListView'
+import ProductListView from '@/views/products/ProductListView'
 
 Vue.use(Router)
 
@@ -27,7 +28,7 @@ const routes = new Router({
     },
     {
       path: '/customers',
-      name: 'customer-list-voew',
+      name: 'customer-list-view',
       component: CustomerListView,
       meta: {
         requiresAuth: true
@@ -35,8 +36,16 @@ const routes = new Router({
     },
     {
       path: '/suppliers',
-      name: 'supplier-list-voew',
+      name: 'supplier-list-view',
       component: SupplierListView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/products',
+      name: 'product-list-view',
+      component: ProductListView,
       meta: {
         requiresAuth: true
       }
