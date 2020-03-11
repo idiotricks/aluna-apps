@@ -1,0 +1,150 @@
+<template>
+  <div v-if="init">
+    <div class="container-fluid">
+      <div class="row mt-4">
+        <div class="col-md-3">
+          <b-card header="Search Supplier">
+            <search-template
+              @onSearch="onSearchSupplier"
+              @onSearchPublish="onSearchPublishSupplier"
+            />
+          </b-card>
+        </div>
+        <div class="col-md-9">
+          <b-modal
+            ref="edit-modal-supplier"
+            :title="supplier ? supplier.name : ''"
+            hide-footer
+            no-close-on-backdrop
+            no-close-on-esc
+            no-fade
+          >
+            <supplier-edit
+              :supplier="supplier"
+              @onEdited="onEditedSupplier"
+            />
+            <b-button-group v-if="supplier">
+              <b-button
+                v-if="supplier.is_publish"
+                @click="onDraftSupplier(supplier.id)"
+              >
+                Draft Mode
+              </b-button>
+              <b-button
+                v-if="!supplier.is_publish"
+                @click="onPublishSupplier(supplier.id)"
+              >
+                Publish
+              </b-button>
+              <b-button
+                @click="onDeletedSupplier(supplier.id)"
+              >
+                Remove
+              </b-button>
+            </b-button-group>
+          </b-modal>
+          <b-card header="Suppliers">
+            <supplier-list
+              :suppliers="suppliers"
+              @onSelected="onSelectedSupplier"
+            />
+            <pagination-template
+              @onPaginate="onPaginateSupplier"
+              :currentPage="supplierParams.page"
+              :count="supplierCount"
+            />
+          </b-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import SearchTemplate from '@/templates/SearchTemplate'
+import PaginationTemplate from '@/templates/PaginationTemplate'
+
+import SupplierList from '@/components/suppliers/SupplierList'
+import SupplierDetail from '@/components/suppliers/SupplierDetail'
+import SupplierEdit from '@/components/suppliers/SupplierEdit'
+import SupplierMixin from '@/components/suppliers/SupplierMixin'
+
+export default {
+  name: 'supplier-choice',
+  data () {
+    return {
+      init: false
+    }
+  },
+  components: {
+    'search-template': SearchTemplate,
+    'pagination-template': PaginationTemplate,
+    'supplier-list': SupplierList,
+    'supplier-detail': SupplierDetail,
+    'supplier-edit': SupplierEdit
+  },
+  mixins: [
+    SupplierMixin
+  ],
+  methods: {
+    async onAllSupplier () {
+      await this.supplierAll()
+      this.init = true
+    },
+    async onSearchSupplier (search) {
+      this.setSearchSupplier(search)
+      this.onAllSupplier()
+    },
+    async onSearchPublishSupplier (value) {
+      this.setPublishSupplier(value)
+      this.onAllSupplier()
+    },
+    async onPaginateSupplier (page) {
+      this.setPageSupplier(page)
+      this.onAllSupplier()
+    },
+    async onNewSupplier () {
+      await this.supplierNew()
+      await this.onAllSupplier()
+    },
+    async onSelectedSupplier (supplier) {
+      this.supplier = supplier
+      this._onEditModalSupplier(true)
+    },
+    async onDeletedSupplier (id) {
+      const confirm = window.confirm('Are you sure ?')
+      if (confirm) {
+        this._onEditModalSupplier(false)
+        await this.supplierDelete(id)
+        await this.onAllSupplier()
+      }
+    },
+    async onEditedSupplier (id, field, value) {
+      await this.supplierEdit(id, field, value)
+      await this.onAllSupplier()
+    },
+    async onPublishSupplier (id) {
+      await this.supplierPublish(id)
+      await this.onAllSupplier()
+    },
+    async onDraftSupplier (id) {
+      await this.supplierDraft(id)
+      await this.onAllSupplier()
+    },
+    _onEditModalSupplier (show) {
+      if (show) {
+        this.$refs['edit-modal-supplier'].show()
+      } else {
+        this.$refs['edit-modal-supplier'].hide()
+      }
+    }
+  },
+  async mounted () {
+    await this.onAllSupplier()
+  }
+}
+</script>
+
+<style>
+
+</style>

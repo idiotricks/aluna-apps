@@ -5,6 +5,7 @@ import DashboardMainView from '@/views/dashboards/DashboardMainView'
 import CustomerListView from '@/views/customers/CustomerListView'
 import SupplierListView from '@/views/suppliers/SupplierListView'
 import ProductListView from '@/views/products/ProductListView'
+import StockInListView from '@/views/stockins/StockInListView'
 
 Vue.use(Router)
 
@@ -46,6 +47,14 @@ const routes = new Router({
       path: '/products',
       name: 'product-list-view',
       component: ProductListView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/stockins',
+      name: 'stock-in-list-view',
+      component: StockInListView,
       meta: {
         requiresAuth: true
       }

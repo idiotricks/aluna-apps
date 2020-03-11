@@ -13,7 +13,7 @@
             <b-dropdown-item to="products">Product</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Stock">
-            <b-dropdown-item href="#">Stock In</b-dropdown-item>
+            <b-dropdown-item to="stockins">Stock In</b-dropdown-item>
             <b-dropdown-item href="#">Stock Out</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Reporting">
