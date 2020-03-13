@@ -9,10 +9,7 @@
       <div class="row mt-4">
         <div class="col-md-3">
           <b-card header="Search Customer">
-            <search-template
-              @onSearch="onSearchCustomer"
-              @onSearchPublish="onSearchPublishCustomer"
-            />
+            <search-template @onSearch="onSearchCustomer" />
           </b-card>
         </div>
         <div class="col-md-9">
@@ -29,18 +26,6 @@
               @onEdited="onEditedCustomer"
             />
             <b-button-group v-if="customer">
-              <b-button
-                v-if="customer.is_publish"
-                @click="onDraftCustomer(customer.id)"
-              >
-                Draft Mode
-              </b-button>
-              <b-button
-                v-if="!customer.is_publish"
-                @click="onPublishCustomer(customer.id)"
-              >
-                Publish
-              </b-button>
               <b-button
                 @click="onDeletedCustomer(customer.id)"
               >
@@ -102,10 +87,6 @@ export default {
       this.setSearchCustomer(search)
       this.onAllCustomer()
     },
-    async onSearchPublishCustomer (value) {
-      this.setPublishCustomer(value)
-      this.onAllCustomer()
-    },
     async onPaginateCustomer (page) {
       this.setPageCustomer(page)
       this.onAllCustomer()
@@ -128,14 +109,6 @@ export default {
     },
     async onEditedCustomer (id, field, value) {
       await this.customerEdit(id, field, value)
-      await this.onAllCustomer()
-    },
-    async onPublishCustomer (id) {
-      await this.customerPublish(id)
-      await this.onAllCustomer()
-    },
-    async onDraftCustomer (id) {
-      await this.customerDraft(id)
       await this.onAllCustomer()
     },
     _onEditModalCustomer (show) {

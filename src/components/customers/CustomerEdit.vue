@@ -15,7 +15,6 @@
         <input
           type="text"
           @blur="onEdited(obj.id, 'name', obj.name)"
-          :disabled="obj.is_publish"
           v-model="obj.name"
           class="form-control"
         />
@@ -25,7 +24,6 @@
         <input
           type="text"
           @blur="onEdited(obj.id, 'phone', obj.phone)"
-          :disabled="obj.is_publish"
           v-model="obj.phone"
           class="form-control"
         />
@@ -34,7 +32,6 @@
         <label>Address</label>
         <textarea
           @blur="onEdited(obj.id, 'address', obj.address)"
-          :disabled="obj.is_publish"
           class="form-control"
           v-model="obj.address"
         >

@@ -74,38 +74,16 @@ export default {
       await this.$http.delete(url, config)
       this.supplier = null
     },
-    async supplierPublish (id) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('token')
-        }
-      }
-      const url = `${process.env.BASE_URL}/suppliers/${id}/publish/`
-      const { data } = await this.$http.post(url, null, config)
-      this.supplier = data
-    },
-    async supplierDraft (id) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('token')
-        }
-      }
-      const url = `${process.env.BASE_URL}/suppliers/${id}/draft/`
-      const { data } = await this.$http.post(url, null, config)
-      this.supplier = data
-    },
-    setPageSupplier (page) {
-      this.supplierParams.page = page
-    },
     setSearchSupplier (search) {
       this.supplierParams.search = search
       this.supplierParams.page = 1
     },
-    setPublishSupplier (publish) {
-      this.supplierParams.is_publish = publish
-      this.supplierParams.page = 1
+    setPageSupplier (page) {
+      this.supplierParams.page = page
+    },
+    resetSupplier () {
+      // TODO: menambahkan reset
+      this.supplier = {}
     }
   }
 }

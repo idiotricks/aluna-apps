@@ -6,8 +6,7 @@ export default {
       stockInCount: 0,
       stockInParams: {
         page: 1,
-        search: '',
-        is_publish: null
+        search: ''
       }
     }
   },
@@ -101,10 +100,6 @@ export default {
     },
     setSearchStockIn (search) {
       this.stockInParams.search = search
-      this.stockInParams.page = 1
-    },
-    setPublishStockIn (publish) {
-      this.stockInParams.is_publish = publish
       this.stockInParams.page = 1
     }
   }

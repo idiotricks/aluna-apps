@@ -1,18 +1,28 @@
 <template>
   <div v-if="init">
-    <navbar-template app="Product Manager">
-      <b-nav-item-dropdown text="Actions" right>
-        <b-dropdown-item @click="onNewProduct" href="#">New Product</b-dropdown-item>
-      </b-nav-item-dropdown>
-    </navbar-template>
     <div class="container-fluid">
       <div class="row mt-4">
-        <div class="col-md-3">
+        <div class="col-md-12">
+          <button
+            class="btn btn-secondary"
+            @click="onNewProduct()"
+          >
+            New Product
+          </button>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
           <b-card header="Search Product">
-            <search-template @onSearch="onSearchProduct" />
+            <search-template
+              @onSearch="onSearchProduct"
+              @onSearchPublish="onSearchPublishProduct"
+            />
           </b-card>
         </div>
-        <div class="col-md-9">
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
           <b-modal
             ref="edit-modal-product"
             :title="product ? product.name : ''"
@@ -26,10 +36,8 @@
               @onEdited="onEditedProduct"
             />
             <b-button-group v-if="product">
-              <b-button
-                @click="onDeletedProduct(product.id)"
-              >
-                Remove
+              <b-button @click="chooseProduct(product)">
+                Choose
               </b-button>
             </b-button-group>
           </b-modal>
@@ -51,7 +59,6 @@
 </template>
 
 <script>
-import NavbarTemplate from '@/templates/NavbarTemplate'
 import SearchTemplate from '@/templates/SearchTemplate'
 import PaginationTemplate from '@/templates/PaginationTemplate'
 
@@ -61,14 +68,13 @@ import ProductEdit from '@/components/products/ProductEdit'
 import ProductMixin from '@/components/products/ProductMixin'
 
 export default {
-  name: 'product-list-view',
+  name: 'product-choice',
   data () {
     return {
       init: false
     }
   },
   components: {
-    'navbar-template': NavbarTemplate,
     'search-template': SearchTemplate,
     'pagination-template': PaginationTemplate,
     'product-list': ProductList,
@@ -87,6 +93,10 @@ export default {
       this.setSearchProduct(search)
       this.onAllProduct()
     },
+    async onSearchPublishProduct (value) {
+      this.setPublishProduct(value)
+      this.onAllProduct()
+    },
     async onPaginateProduct (page) {
       this.setPageProduct(page)
       this.onAllProduct()
@@ -94,22 +104,16 @@ export default {
     async onNewProduct () {
       await this.productNew()
       await this.onAllProduct()
+      await this._onEditModalProduct(true)
     },
     async onSelectedProduct (product) {
       this.product = product
       this._onEditModalProduct(true)
     },
-    async onDeletedProduct (id) {
-      const confirm = window.confirm('Are you sure ?')
-      if (confirm) {
-        this._onEditModalProduct(false)
-        await this.productDelete(id)
-        await this.onAllProduct()
-      }
-    },
     async onEditedProduct (id, field, value) {
       await this.productEdit(id, field, value)
       await this.onAllProduct()
+      this.freshProduct()
     },
     _onEditModalProduct (show) {
       if (show) {
@@ -117,6 +121,12 @@ export default {
       } else {
         this.$refs['edit-modal-product'].hide()
       }
+    },
+    chooseProduct (product) {
+      this.$emit('chooseProduct', product)
+    },
+    freshProduct () {
+      this.$emit('freshProduct')
     }
   },
   async mounted () {

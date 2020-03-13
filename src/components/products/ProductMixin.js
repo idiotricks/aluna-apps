@@ -6,8 +6,7 @@ export default {
       productCount: 0,
       productParams: {
         page: 1,
-        search: '',
-        is_publish: null
+        search: ''
       }
     }
   },
@@ -101,10 +100,6 @@ export default {
     },
     setSearchProduct (search) {
       this.productParams.search = search
-      this.productParams.page = 1
-    },
-    setPublishProduct (publish) {
-      this.productParams.is_publish = publish
       this.productParams.page = 1
     }
   }

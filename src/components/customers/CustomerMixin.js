@@ -6,8 +6,7 @@ export default {
       customerCount: 0,
       customerParams: {
         page: 1,
-        search: '',
-        is_publish: null
+        search: ''
       }
     }
   },
@@ -33,7 +32,6 @@ export default {
           'Authorization': localStorage.getItem('token')
         }
       }
-      console.log(config)
       const url = `${process.env.BASE_URL}/customers/`
       const { data } = await this.$http.post(url, null, config)
       this.customer = data
@@ -57,7 +55,8 @@ export default {
         }
       }
       const payload = {
-        [field]: value
+        [field]: value,
+        is_publish: true
       }
       const url = `${process.env.BASE_URL}/customers/${id}/`
       const { data } = await this.$http.patch(url, payload, config)
@@ -101,10 +100,6 @@ export default {
     },
     setSearchCustomer (search) {
       this.customerParams.search = search
-      this.customerParams.page = 1
-    },
-    setPublishCustomer (publish) {
-      this.customerParams.is_publish = publish
       this.customerParams.page = 1
     }
   }

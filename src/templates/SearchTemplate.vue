@@ -10,13 +10,6 @@
         @keypress.enter="onSearch"
       >
     </div>
-    <div class="form-group">
-      <b-form-select
-        @change="onSearchPublish"
-        v-model="isPublish"
-        :options="options"
-      ></b-form-select>
-    </div>
   </div>
 </template>
 
@@ -37,9 +30,6 @@ export default {
   methods: {
     onSearch () {
       this.$emit('onSearch', this.search)
-    },
-    onSearchPublish () {
-      this.$emit('onSearchPublish', this.isPublish)
     }
   }
 }

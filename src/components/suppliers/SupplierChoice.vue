@@ -2,7 +2,17 @@
   <div v-if="init">
     <div class="container-fluid">
       <div class="row mt-4">
-        <div class="col-md-3">
+        <div class="col-md-12">
+          <button
+            class="btn btn-secondary"
+            @click="onNewSupplier()"
+          >
+            New Supplier
+          </button>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
           <b-card header="Search Supplier">
             <search-template
               @onSearch="onSearchSupplier"
@@ -10,14 +20,13 @@
             />
           </b-card>
         </div>
-        <div class="col-md-9">
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
           <b-modal
             ref="edit-modal-supplier"
             :title="supplier ? supplier.name : ''"
             hide-footer
-            no-close-on-backdrop
-            no-close-on-esc
-            no-fade
           >
             <supplier-edit
               :supplier="supplier"
@@ -25,21 +34,9 @@
             />
             <b-button-group v-if="supplier">
               <b-button
-                v-if="supplier.is_publish"
-                @click="onDraftSupplier(supplier.id)"
+                @click="chooseSupplier(supplier)"
               >
-                Draft Mode
-              </b-button>
-              <b-button
-                v-if="!supplier.is_publish"
-                @click="onPublishSupplier(supplier.id)"
-              >
-                Publish
-              </b-button>
-              <b-button
-                @click="onDeletedSupplier(supplier.id)"
-              >
-                Remove
+                Choose
               </b-button>
             </b-button-group>
           </b-modal>
@@ -106,29 +103,13 @@ export default {
     async onNewSupplier () {
       await this.supplierNew()
       await this.onAllSupplier()
+      await this._onEditModalSupplier(true)
     },
     async onSelectedSupplier (supplier) {
-      this.supplier = supplier
-      this._onEditModalSupplier(true)
-    },
-    async onDeletedSupplier (id) {
-      const confirm = window.confirm('Are you sure ?')
-      if (confirm) {
-        this._onEditModalSupplier(false)
-        await this.supplierDelete(id)
-        await this.onAllSupplier()
-      }
+      this.$emit('chooseSupplier', supplier)
     },
     async onEditedSupplier (id, field, value) {
       await this.supplierEdit(id, field, value)
-      await this.onAllSupplier()
-    },
-    async onPublishSupplier (id) {
-      await this.supplierPublish(id)
-      await this.onAllSupplier()
-    },
-    async onDraftSupplier (id) {
-      await this.supplierDraft(id)
       await this.onAllSupplier()
     },
     _onEditModalSupplier (show) {
@@ -137,6 +118,9 @@ export default {
       } else {
         this.$refs['edit-modal-supplier'].hide()
       }
+    },
+    chooseSupplier (supplier) {
+      this.$emit('chooseSupplier', supplier)
     }
   },
   async mounted () {

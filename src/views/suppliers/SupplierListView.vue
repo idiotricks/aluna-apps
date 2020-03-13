@@ -29,21 +29,7 @@
               @onEdited="onEditedSupplier"
             />
             <b-button-group v-if="supplier">
-              <b-button
-                v-if="supplier.is_publish"
-                @click="onDraftSupplier(supplier.id)"
-              >
-                Draft Mode
-              </b-button>
-              <b-button
-                v-if="!supplier.is_publish"
-                @click="onPublishSupplier(supplier.id)"
-              >
-                Publish
-              </b-button>
-              <b-button
-                @click="onDeletedSupplier(supplier.id)"
-              >
+              <b-button @click="onDeletedSupplier(supplier.id)">
                 Remove
               </b-button>
             </b-button-group>

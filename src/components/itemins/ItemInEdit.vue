@@ -2,7 +2,13 @@
   <div>
     <div v-if="obj">
       <div class="form-group">
-        <b-calendar width="500px" @selected="onEdited(obj.id, 'date', obj.date)" v-model="obj.date"></b-calendar>
+        <label>Quantity</label>
+        <input
+          @change="onEdited(obj.id, 'quantity', obj.quantity)"
+          type="number"
+          class="form-control"
+          v-model="obj.quantity"
+        />
       </div>
     </div>
   </div>
@@ -10,22 +16,22 @@
 
 <script>
 export default {
-  name: 'stock-in-edit',
-  props: ['stockIn'],
+  name: 'item-in-edit',
+  props: ['itemIn'],
   data () {
     return {
-      obj: this.stockIn
+      obj: this.itemIn
     }
   },
   methods: {
     onEdited (id, field, value) {
-      if (this.stockIn[field] !== value) {
+      if (this.itemIn[field] !== value) {
         this.$emit('onEdited', id, field, value)
       }
     }
   },
   watch: {
-    stockIn: {
+    itemIn: {
       handler (n, o) {
         this.obj = JSON.parse(JSON.stringify(n))
       },

@@ -15,7 +15,6 @@
         <input
           type="text"
           @blur="onEdited(obj.id, 'name', obj.name)"
-          :disabled="obj.is_publish"
           v-model="obj.name"
           class="form-control"
         />
@@ -25,7 +24,6 @@
         <input
           type="number"
           @blur="onEdited(obj.id, 'cogs', obj.cogs)"
-          :disabled="obj.is_publish"
           v-model="obj.cogs"
           class="form-control"
         />
@@ -35,7 +33,6 @@
         <input
           type="number"
           @blur="onEdited(obj.id, 'price', obj.price)"
-          :disabled="obj.is_publish"
           v-model="obj.price"
           class="form-control"
         />
@@ -45,7 +42,6 @@
         <input
           type="number"
           @blur="onEdited(obj.id, 'stock', obj.stock)"
-          :disabled="obj.is_publish"
           v-model="obj.stock"
           class="form-control"
         />
