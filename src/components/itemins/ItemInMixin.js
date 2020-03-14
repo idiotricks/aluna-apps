@@ -8,7 +8,8 @@ export default {
         page: 1,
         search: '',
         product: null,
-        stockin: null
+        stockin: null,
+        is_init: false
       }
     }
   },
@@ -57,7 +58,8 @@ export default {
         }
       }
       const payload = {
-        [field]: value
+        [field]: value,
+        is_init: false
       }
       const url = `${process.env.BASE_URL}/item-in/${id}/`
       const { data } = await this.$http.patch(url, payload, config)
@@ -72,7 +74,7 @@ export default {
       }
       const url = `${process.env.BASE_URL}/item-in/${id}/`
       await this.$http.delete(url, config)
-      this.itemIn = null
+      this.itemIn = {}
     },
     setPageItemIn (page) {
       this.itemInParams.page = page

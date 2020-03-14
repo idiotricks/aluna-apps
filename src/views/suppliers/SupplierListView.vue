@@ -87,20 +87,20 @@ export default {
       this.onAllSupplier()
     },
     async onSearchPublishSupplier (value) {
-      this.setPublishSupplier(value)
-      this.onAllSupplier()
+      await this.setPublishSupplier(value)
+      await this.onAllSupplier()
     },
     async onPaginateSupplier (page) {
       this.setPageSupplier(page)
       this.onAllSupplier()
     },
     async onNewSupplier () {
-      this.supplierNew()
-      this._onEditModalSupplier(true)
+      await this.supplierNew()
+      await this._onEditModalSupplier(true)
     },
     async onSelectedSupplier (supplier) {
       this.supplier = supplier
-      this._onEditModalSupplier(true)
+      await this._onEditModalSupplier(true)
     },
     async onDeletedSupplier (id) {
       const confirm = window.confirm('Are you sure ?')

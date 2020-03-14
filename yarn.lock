@@ -1144,10 +1144,10 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-vue@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.5.0.tgz#a8e48f9c0d15ebeb0f0b35cdc1ab26fd7a015307"
-  integrity sha512-LixZePxJqIkwsha2WAjAu7ZDH+oJ+JLxPGsl1SIbWebcEYZ+QtGx4JM2nR287t/0uWYGO+/oJ0KlaSO662VtLA==
+bootstrap-vue@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.6.1.tgz#ee96e2e4d277a9044b378e925ef703b2bd9d27c4"
+  integrity sha512-eOL06T2sjOREUiyN1IZCFYANKrb+tqRqe1pgwjXjbjYa3oclYT6E99v/O12W0Eq9i7+0rQiy+wFOSkFL2yvnng==
   dependencies:
     "@nuxt/opencollective" "^0.3.0"
     bootstrap ">=4.4.1 <5.0.0"
@@ -2184,6 +2184,11 @@ de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=
+
+debounce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
+  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -7259,6 +7264,11 @@ vue-axios@^2.1.5:
   resolved "https://registry.yarnpkg.com/vue-axios/-/vue-axios-2.1.5.tgz#1af4bf1218ed71309c76afb38d0f683e312c24a7"
   integrity sha512-th5xVbInVoyIoe+qY+9GCflEVezxAvztD4xpFF39SRQYqpoKD2qkmX8yv08jJG9a2SgNOCjirjJGSwg/wTrbmA==
 
+vue-debounce@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/vue-debounce/-/vue-debounce-2.5.1.tgz#9f8998feab89c08752156130c7fa557fcc4a930f"
+  integrity sha512-pZF3RfJXJaqgOlc1S+OwW1gVznjxmIeWX3bfW/HsUWsX0AYJJ7sF9w3OyFOU6e3k+yGxRH8Gi6XzPhvU3aLlgQ==
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
@@ -7299,6 +7309,11 @@ vue-loader@^13.3.0:
     vue-hot-reload-api "^2.2.0"
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
+
+vue-progressbar@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/vue-progressbar/-/vue-progressbar-0.7.5.tgz#414730892252b1e45582d4979dec93038e007f79"
+  integrity sha512-VeNG/inMsFbvdCTS7lJ1gjDAKSUZdqkhW9gS1tb0we1rqFKxR+BCEiVUgw5C84vODKb14M2GWHTw0WVdpoVg6g==
 
 vue-router@^3.0.1:
   version "3.1.6"

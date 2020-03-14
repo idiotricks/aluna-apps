@@ -2,7 +2,11 @@
   <div>
     <div v-if="obj">
       <div class="form-group">
-        <b-calendar width="500px" @selected="onEdited(obj.id, 'date', obj.date)" v-model="obj.date"></b-calendar>
+        <!-- <b-calendar width="500px" @selected="" v-model="obj.date"></b-calendar> -->
+        <b-form-datepicker
+          @input="onEdited(obj.id, 'date', obj.date)"
+          v-model="obj.date"
+        ></b-form-datepicker>
       </div>
     </div>
   </div>
@@ -18,9 +22,9 @@ export default {
     }
   },
   methods: {
-    onEdited (id, field, value) {
+    async onEdited (id, field, value) {
       if (this.stockIn[field] !== value) {
-        this.$emit('onEdited', id, field, value)
+        await this.$emit('onEdited', id, field, value)
       }
     }
   },

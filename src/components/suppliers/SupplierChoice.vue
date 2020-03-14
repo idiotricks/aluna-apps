@@ -34,9 +34,15 @@
             />
             <b-button-group v-if="supplier">
               <b-button
+                v-if="!supplier.is_init"
                 @click="chooseSupplier(supplier)"
               >
                 Choose
+              </b-button>
+              <b-button
+                @click="onDeleteSupplier(supplier)"
+              >
+                {{ supplier.is_init ? 'Discard' : 'Remove' }}
               </b-button>
             </b-button-group>
           </b-modal>
@@ -111,6 +117,11 @@ export default {
     async onEditedSupplier (id, field, value) {
       await this.supplierEdit(id, field, value)
       await this.onAllSupplier()
+    },
+    async onDeleteSupplier (supplier) {
+      await this._onEditModalSupplier(false)
+      await this.supplierDelete(supplier.id)
+      await this.supplierAll()
     },
     _onEditModalSupplier (show) {
       if (show) {

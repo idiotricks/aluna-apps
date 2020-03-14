@@ -36,15 +36,18 @@
               @onEdited="onEditedProduct"
             />
             <b-button-group v-if="product">
-              <b-button @click="chooseProduct(product)">
+              <b-button variant="success" v-if="!product.is_init" @click="chooseProduct(product)">
                 Choose
+              </b-button>
+              <b-button variant="danger" @click="onDeletedProduct(product)">
+                {{ product.is_init ? 'Discard' : 'Remove' }}
               </b-button>
             </b-button-group>
           </b-modal>
           <b-card header="Products">
             <product-list
               :products="products"
-              @onSelected="onSelectedProduct"
+              @onSelected="chooseProduct"
             />
             <pagination-template
               @onPaginate="onPaginateProduct"
@@ -108,25 +111,26 @@ export default {
     },
     async onSelectedProduct (product) {
       this.product = product
-      this._onEditModalProduct(true)
+      await this._onEditModalProduct(true)
     },
     async onEditedProduct (id, field, value) {
       await this.productEdit(id, field, value)
       await this.onAllProduct()
-      this.freshProduct()
     },
-    _onEditModalProduct (show) {
+    async onDeletedProduct (product) {
+      await this._onEditModalProduct(false)
+      await this.productDelete(product.id)
+      await this.onAllProduct()
+    },
+    async _onEditModalProduct (show) {
       if (show) {
-        this.$refs['edit-modal-product'].show()
+        await this.$refs['edit-modal-product'].show()
       } else {
-        this.$refs['edit-modal-product'].hide()
+        await this.$refs['edit-modal-product'].hide()
       }
     },
     chooseProduct (product) {
       this.$emit('chooseProduct', product)
-    },
-    freshProduct () {
-      this.$emit('freshProduct')
     }
   },
   async mounted () {

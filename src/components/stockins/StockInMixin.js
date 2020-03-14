@@ -102,6 +102,17 @@ export default {
     setSearchStockIn (search) {
       this.stockInParams.search = search
       this.stockInParams.page = 1
+    },
+    async stockInCalculate (id) {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
+      }
+      const url = `${process.env.BASE_URL}/stock-in/${id}/calculate/`
+      const { data } = await this.$http.post(url, null, config)
+      this.stockIn = data
     }
   }
 }
