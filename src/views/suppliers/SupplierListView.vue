@@ -20,9 +20,7 @@
             ref="edit-modal-supplier"
             :title="supplier ? supplier.name : ''"
             hide-footer
-            no-close-on-backdrop
-            no-close-on-esc
-            no-fade
+            hide-header-close
           >
             <supplier-edit
               :supplier="supplier"
@@ -30,7 +28,7 @@
             />
             <b-button-group v-if="supplier">
               <b-button @click="onDeletedSupplier(supplier.id)">
-                Remove
+                {{ supplier.is_init ? 'Discard' : 'Remove' }}
               </b-button>
             </b-button-group>
           </b-modal>
@@ -97,8 +95,8 @@ export default {
       this.onAllSupplier()
     },
     async onNewSupplier () {
-      await this.supplierNew()
-      await this.onAllSupplier()
+      this.supplierNew()
+      this._onEditModalSupplier(true)
     },
     async onSelectedSupplier (supplier) {
       this.supplier = supplier

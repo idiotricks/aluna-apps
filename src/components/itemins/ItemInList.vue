@@ -22,8 +22,7 @@ export default {
   data () {
     return {
       fields: [
-        'product',
-        'stockin',
+        'product_name',
         'quantity'
       ]
     }

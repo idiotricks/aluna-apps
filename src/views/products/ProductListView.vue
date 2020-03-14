@@ -92,8 +92,9 @@ export default {
       this.onAllProduct()
     },
     async onNewProduct () {
-      await this.productNew()
-      await this.onAllProduct()
+      this.productNew()
+      this.onAllProduct()
+      this._onEditModalProduct(true)
     },
     async onSelectedProduct (product) {
       this.product = product

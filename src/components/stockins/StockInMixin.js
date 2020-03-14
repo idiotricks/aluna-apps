@@ -6,7 +6,8 @@ export default {
       stockInCount: 0,
       stockInParams: {
         page: 1,
-        search: ''
+        search: '',
+        is_init: false
       }
     }
   },
@@ -32,7 +33,6 @@ export default {
           'Authorization': localStorage.getItem('token')
         }
       }
-      console.log(config)
       const url = `${process.env.BASE_URL}/stock-in/`
       const { data } = await this.$http.post(url, null, config)
       this.stockIn = data
@@ -56,7 +56,8 @@ export default {
         }
       }
       const payload = {
-        [field]: value
+        [field]: value,
+        is_init: false
       }
       const url = `${process.env.BASE_URL}/stock-in/${id}/`
       const { data } = await this.$http.patch(url, payload, config)

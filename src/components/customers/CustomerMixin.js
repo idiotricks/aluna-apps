@@ -6,7 +6,8 @@ export default {
       customerCount: 0,
       customerParams: {
         page: 1,
-        search: ''
+        search: '',
+        is_init: false
       }
     }
   },
@@ -56,7 +57,7 @@ export default {
       }
       const payload = {
         [field]: value,
-        is_publish: true
+        is_init: false
       }
       const url = `${process.env.BASE_URL}/customers/${id}/`
       const { data } = await this.$http.patch(url, payload, config)

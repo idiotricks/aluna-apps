@@ -92,8 +92,8 @@ export default {
       this.onAllCustomer()
     },
     async onNewCustomer () {
-      await this.customerNew()
-      await this.onAllCustomer()
+      this.customerNew()
+      this._onEditModalCustomer(true)
     },
     async onSelectedCustomer (customer) {
       this.customer = customer

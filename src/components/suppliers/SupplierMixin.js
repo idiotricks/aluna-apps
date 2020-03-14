@@ -7,7 +7,7 @@ export default {
       supplierParams: {
         page: 1,
         search: '',
-        is_publish: null
+        is_init: false
       }
     }
   },
@@ -57,7 +57,8 @@ export default {
         }
       }
       const payload = {
-        [field]: value
+        [field]: value,
+        is_init: false
       }
       const url = `${process.env.BASE_URL}/suppliers/${id}/`
       const { data } = await this.$http.patch(url, payload, config)
