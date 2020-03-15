@@ -54,7 +54,9 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <b-button v-if="stockIn.is_calculate === false" @click="_onChoiceModalSupplier(true)" variant="success">Choose Supplier</b-button>
+                  <b-button v-if="stockIn.is_calculate === false" @click="_onChoiceModalSupplier(true)" variant="outline-primary" size="sm">
+                    Choose Supplier
+                  </b-button>
                 </div>
               </div>
             </b-card>
@@ -69,7 +71,7 @@
             >
               <div class="row" >
                 <div class="col-md-12 mb-4" v-if="stockIn.is_calculate === false">
-                  <b-button @click="_onChoiceModalProduct">New Item</b-button>
+                  <b-button variant="outline-primary" size="sm" @click="_onChoiceModalProduct">New Item</b-button>
                 </div>
                 <div class="col-md-12">
                   <item-in-list :itemIns="itemIns" @onSelected="onSelectedItemIn" />
