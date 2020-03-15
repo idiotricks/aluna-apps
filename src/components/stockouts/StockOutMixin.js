@@ -74,10 +74,10 @@ export default {
       await this.$http.delete(url, config)
       this.stockOut = null
     },
-    setPageStockIn (page) {
+    setPageStockOut (page) {
       this.stockOutParams.page = page
     },
-    setSearchStockIn (search) {
+    setSearchStockOut (search) {
       this.stockOutParams.search = search
       this.stockOutParams.page = 1
     },
