@@ -14,10 +14,7 @@
       <div class="row mt-4">
         <div class="col-md-12">
           <b-card header="Search Customer">
-            <search-template
-              @onSearch="onSearchCustomer"
-              @onSearchPublish="onSearchPublishCustomer"
-            />
+            <search-template @onSearch="onSearchCustomer"/>
           </b-card>
         </div>
       </div>
@@ -96,10 +93,6 @@ export default {
     },
     async onSearchCustomer (search) {
       this.setSearchCustomer(search)
-      this.onAllCustomer()
-    },
-    async onSearchPublishCustomer (value) {
-      this.setPublishCustomer(value)
       this.onAllCustomer()
     },
     async onPaginateCustomer (page) {

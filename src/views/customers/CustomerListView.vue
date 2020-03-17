@@ -11,6 +11,9 @@
           <b-card header="Search Customer">
             <search-template @onSearch="onSearchCustomer" />
           </b-card>
+          <b-card class="mt-4" header="Search Customer">
+            <ui-common-filter-date @filter="filterDateCustomer" />
+          </b-card>
         </div>
         <div class="col-md-9">
           <b-modal
@@ -54,6 +57,7 @@
 import NavbarTemplate from '@/templates/NavbarTemplate'
 import SearchTemplate from '@/templates/SearchTemplate'
 import PaginationTemplate from '@/templates/PaginationTemplate'
+import UICommonFilterDate from '@/templates/UICommonFilterDate'
 
 import CustomerList from '@/components/customers/CustomerList'
 import CustomerDetail from '@/components/customers/CustomerDetail'
@@ -71,6 +75,7 @@ export default {
     'navbar-template': NavbarTemplate,
     'search-template': SearchTemplate,
     'pagination-template': PaginationTemplate,
+    'ui-common-filter-date': UICommonFilterDate,
     'customer-list': CustomerList,
     'customer-detail': CustomerDetail,
     'customer-edit': CustomerEdit
@@ -117,6 +122,9 @@ export default {
       } else {
         this.$refs['edit-modal-customer'].hide()
       }
+    },
+    filterDateCustomer (startDate, endDate) {
+      console.log(startDate, endDate)
     }
   },
   async mounted () {
