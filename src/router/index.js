@@ -1,11 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AuthLoginView from '@/views/auths/AuthLoginView'
-import DashboardMainView from '@/views/dashboards/DashboardMainView'
-import CustomerListView from '@/views/customers/CustomerListView'
-import SupplierListView from '@/views/suppliers/SupplierListView'
-import ProductListView from '@/views/products/ProductListView'
-import StockInListView from '@/views/stockins/StockInListView'
+import ViewCommonUserLogin from '@/views/commons/users/ViewCommonUserLogin'
+import ViewCommonCustomer from '@/views/commons/customers/ViewCommonCustomer'
 
 Vue.use(Router)
 
@@ -13,52 +9,60 @@ const routes = new Router({
   routes: [
     {
       path: '/',
-      name: 'auth-login-view',
-      component: AuthLoginView,
+      name: 'view-common-user-signin',
+      component: ViewCommonUserLogin,
       meta: {
         preventPage: true
       }
     },
     {
-      path: '/dashboard',
-      name: 'dashboard-main-view',
-      component: DashboardMainView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
       path: '/customers',
-      name: 'customer-list-view',
-      component: CustomerListView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/suppliers',
-      name: 'supplier-list-view',
-      component: SupplierListView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/products',
-      name: 'product-list-view',
-      component: ProductListView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/stockins',
-      name: 'stock-in-list-view',
-      component: StockInListView,
+      name: 'view-common-customer',
+      component: ViewCommonCustomer,
       meta: {
         requiresAuth: true
       }
     }
+    // {
+    //   path: '/dashboard',
+    //   name: 'dashboard-main-view',
+    //   component: DashboardMainView,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
+    // {
+    //   path: '/customers',
+    //   name: 'customer-list-view',
+    //   component: CustomerListView,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
+    // {
+    //   path: '/suppliers',
+    //   name: 'supplier-list-view',
+    //   component: SupplierListView,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
+    // {
+    //   path: '/products',
+    //   name: 'product-list-view',
+    //   component: ProductListView,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
+    // {
+    //   path: '/stockins',
+    //   name: 'stock-in-list-view',
+    //   component: StockInListView,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // }
   ]
 })
 

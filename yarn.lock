@@ -96,6 +96,11 @@
     consola "^2.10.1"
     node-fetch "^2.6.0"
 
+"@smartweb/vue-flash-message@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@smartweb/vue-flash-message/-/vue-flash-message-0.6.2.tgz#02539ccf35ae671a940695564079674da892c12b"
+  integrity sha512-tmFN8gZ3K5YxNUv8MKu6FZBQmrni6pAYfmadXUrTuzYk1yyPFz/UjeqQAEgniaq//H2MGDNsYN+izpmFfHMMPg==
+
 "@types/q@^1.5.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"

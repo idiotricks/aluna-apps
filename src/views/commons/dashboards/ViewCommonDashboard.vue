@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'item-out-edit'
+  name: 'view-common-dashboard'
 }
 </script>
 
