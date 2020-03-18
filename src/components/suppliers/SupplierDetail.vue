@@ -1,7 +1,12 @@
 <template>
   <div>
     <div v-if="obj">
-      <b-table :items="[obj]" :fields="fields"></b-table>
+      <b-table
+        stacked
+        :items="[obj]"
+        :fields="fields"
+      >
+      </b-table>
     </div>
   </div>
 </template>
@@ -12,7 +17,3 @@ export default {
   props: ['obj', 'fields']
 }
 </script>
-
-<style>
-
-</style>

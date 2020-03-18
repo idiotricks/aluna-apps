@@ -95,10 +95,12 @@ export default {
     },
     setQuerySearchCustomer (search) {
       this.queryCustomer.search = search
+      this.queryCustomer.page = 1
     },
     setQueryDateRangeCustomer (startDate, endDate) {
       this.queryCustomer.start_date = startDate
       this.queryCustomer.end_date = endDate
+      this.queryCustomer.page = 1
     },
     resetCustomer () {
       this.customer = {}

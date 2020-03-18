@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ViewCommonUserLogin from '@/views/commons/users/ViewCommonUserLogin'
 import ViewCommonCustomer from '@/views/commons/customers/ViewCommonCustomer'
+import ViewCommonSupplier from '@/views/commons/suppliers/ViewCommonSupplier'
+import ViewCommonProduct from '@/views/commons/products/ViewCommonProduct'
 
 Vue.use(Router)
 
@@ -19,6 +21,22 @@ const routes = new Router({
       path: '/customers',
       name: 'view-common-customer',
       component: ViewCommonCustomer,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/suppliers',
+      name: 'view-common-supplier',
+      component: ViewCommonSupplier,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/products',
+      name: 'view-common-product',
+      component: ViewCommonProduct,
       meta: {
         requiresAuth: true
       }

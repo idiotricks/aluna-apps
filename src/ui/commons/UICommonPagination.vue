@@ -1,7 +1,7 @@
 <template>
   <div v-if="totalRows">
     <b-pagination
-      v-model="currentPage"
+      v-model="currPage"
       :total-rows="totalRows"
       :per-page="perPage"
       @change="paginate"
@@ -15,12 +15,18 @@ export default {
   props: ['totalRows', 'currentPage'],
   data () {
     return {
-      perPage: 10
+      perPage: 10,
+      currPage: 1
     }
   },
   methods: {
     paginate (page) {
       this.$emit('paginate', page)
+    }
+  },
+  watch: {
+    currentPage (value) {
+      this.currPage = value
     }
   }
 }

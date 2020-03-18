@@ -12,7 +12,3 @@ export default {
   props: ['obj', 'fields']
 }
 </script>
-
-<style>
-
-</style>
