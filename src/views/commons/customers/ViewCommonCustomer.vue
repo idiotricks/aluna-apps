@@ -1,40 +1,35 @@
 <template>
   <div>
-    <ui-common-header app="Customer Manager">
-      <b-nav-item-dropdown text="Actions" right>
-        <b-dropdown-item v-if="segmentA" @click="onCreateCustomer()" href="#">
+    <ui-common-header app="Customer Manager" />
+    <ui-common-action>
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button @click="onExportCSVCustomer()">
+          Export CSV
+        </b-button>
+        <b-button @click="onExportPDFCustomer()">
+          Export PDF
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button variant="primary" @click="onCreateCustomer()">
           New Customer
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onResetCustomer"
-          href="#"
-        >
-          Back
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onDeleteCustomer(customer)"
-          href="#"
-        >
-          {{ customer.is_init ? 'Discard ' : 'Delete ' }}
-          {{ customer.name }}
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </ui-common-header>
-    <!-- SEGMENT-A -->
-    <div v-if="segmentA" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <b-card header="Search Customer">
-            <ui-common-search @search="onSearchCustomer" />
-          </b-card>
-          <b-card class="mt-4" header="Filter Customer by Date">
-            <ui-common-date-filter @filter="onFilterDateCustomer" />
-          </b-card>
-        </div>
-        <div class="col-md-9">
-          <b-card header="Customers">
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button variant="outline-secondary" @click="onDeleteCustomer(customer)">
+          {{ customer.is_init ? 'Discard ' : 'Delete ' }} Customer
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button @click="onResetCustomer">
+          Close
+        </b-button>
+      </b-button-group>
+    </ui-common-action>
+    <b-container :fluid="true">
+      <b-row class="mt-4">
+        <b-col>
+          <b-card no-body>
             <customer-list
               :objs="customers"
               :fields="[
@@ -45,47 +40,38 @@
               ]"
               @take="onTakeCustomer"
             />
-            <ui-common-pagination
-              class="mt-3"
-              :totalRows="totalCustomer"
-              :currentPage="queryCustomer.page"
-              @paginate="onPaginateCustomer"
-            />
           </b-card>
-        </div>
-      </div>
-    </div>
-    <!-- SEGMENT-B -->
-    <div v-if="segmentB" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <b-card :header="customer.name">
+          <ui-common-pagination
+            class="mt-4"
+            :totalRows="totalCustomer"
+            :currentPage="queryCustomer.page"
+            @paginate="onPaginateCustomer"
+          />
+        </b-col>
+        <b-col v-if="segmentA" cols="3">
+          <b-card header="Search Customer">
+            <ui-common-search @search="onSearchCustomer" />
+          </b-card>
+          <b-card class="mt-4" header="Filter Customer by Date">
+            <ui-common-date-filter @filter="onFilterDateCustomer" />
+          </b-card>
+        </b-col>
+        <b-col v-if="segmentB" cols="6">
+          <b-card header="Edit Customer">
             <customer-edit
               :obj="customer"
               @edit="onEditCustomer"
             />
           </b-card>
-        </div>
-        <div class="col-md-6">
-          <b-card header="Preview Customer">
-            <customer-detail
-              :obj="customer"
-              :fields="[
-                'numcode',
-                'name',
-                'phone',
-                'address'
-              ]"
-            />
-          </b-card>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
 import UICommonHeader from '@/ui/commons/UICommonHeader'
+import UICommonAction from '@/ui/commons/UICommonAction'
 import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
@@ -105,6 +91,7 @@ export default {
   },
   components: {
     'ui-common-header': UICommonHeader,
+    'ui-common-action': UICommonAction,
     'ui-common-pagination': UICommonPagination,
     'ui-common-search': UICommonSearch,
     'ui-common-date-filter': UICommonDateFilter,
@@ -201,6 +188,40 @@ export default {
       try {
         this.setQueryDateRangeCustomer(startDate, endDate)
         await this.allCustomer()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportCSVCustomer () {
+      try {
+        const data = await this.exportCSVCustomer()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-customer-${date.toLocaleDateString()}.csv`
+        )
+        document.body.appendChild(link)
+        link.click()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportPDFCustomer () {
+      try {
+        const data = await this.exportPDFCustomer()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-customers-${date.toLocaleDateString()}.pdf`
+        )
+        document.body.appendChild(link)
+        link.click()
       } catch (error) {
         console.log(error)
       }

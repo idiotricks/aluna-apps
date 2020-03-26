@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'stock-in-list',
+  name: 'stock-card-edit',
   props: ['objs', 'fields'],
   methods: {
     take (item, index, event) {

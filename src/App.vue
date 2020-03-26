@@ -11,5 +11,5 @@ export default {
 </script>
 
 <style>
-   body { background: #f9f9f9 !important; }
+   body { background: #f1f1f1 !important; }
 </style>

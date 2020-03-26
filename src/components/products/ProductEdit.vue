@@ -13,9 +13,9 @@
         <label>Stock</label>
         <b-form-input
           type="number"
-          v-model="lodat.stock"
+          :value="lodat.stock"
           :min="1"
-          @change="edit(lodat.id, 'stock', lodat.stock)"
+          disabled
         />
       </div>
       <div class="form-group">
@@ -51,9 +51,7 @@ export default {
   },
   methods: {
     edit (id, field, value) {
-      if (this.obj[field] !== value) {
-        this.$emit('edit', id, field, value)
-      }
+      this.$emit('edit', id, field, value)
     }
   },
   watch: {

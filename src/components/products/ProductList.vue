@@ -1,15 +1,19 @@
 <template>
-  <div>
     <b-table
-      bordered
+      head-variant="light"
+      select-mode="single"
+      selectable
+      selected-variant="primary"
       hover
-      striped
+      :busy="objs.length < 1"
       :items="objs"
       :fields="fields"
       @row-clicked="take"
     >
+      <template v-slot:table-busy>
+        Data not yet available!
+      </template>
     </b-table>
-  </div>
 </template>
 
 <script>

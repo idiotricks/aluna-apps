@@ -1,8 +1,16 @@
 <template>
   <div>
-    <div v-if="obj">
-      <b-table :items="[obj]" :fields="fields"></b-table>
-    </div>
+    <b-table
+      stacked
+      borderless
+      :items="[obj]"
+      :fields="fields"
+      :busy="!obj"
+    >
+      <template v-slot:table-busy>
+        Data not yet available!
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -12,7 +20,3 @@ export default {
   props: ['obj', 'fields']
 }
 </script>
-
-<style>
-
-</style>

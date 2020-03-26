@@ -1,40 +1,43 @@
 <template>
   <div>
-    <ui-common-header app="Product Manager">
-      <b-nav-item-dropdown text="Actions" right>
-        <b-dropdown-item v-if="segmentA" @click="onCreateProduct()" href="#">
-          New Product
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onResetProduct"
-          href="#"
-        >
-          Back
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onDeleteProduct(product)"
-          href="#"
-        >
-          {{ product.is_init ? 'Discard ' : 'Delete ' }}
-          {{ product.name }}
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </ui-common-header>
-    <!-- SEGMENT-A -->
-    <div v-if="segmentA" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <b-card header="Search Product">
-            <ui-common-search @search="onSearchProduct" />
-          </b-card>
-          <b-card class="mt-4" header="Filter Product by Date">
-            <ui-common-date-filter @filter="onFilterDateProduct" />
-          </b-card>
-        </div>
-        <div class="col-md-9">
-          <b-card header="Products">
+    <ui-common-header app="Product Manager" />
+    <ui-common-action>
+      <!-- TODO: pagination top -->
+      <!-- <b-button-group v-if="segmentA">
+        <b-pagination
+          v-model="queryProduct.page"
+          size="sm"
+          :total-rows="totalProduct"
+          :per-page="10"
+          @change="onPaginateProduct"
+        />
+      </b-button-group> -->
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button @click="onExportCSVProduct()">
+          Export CSV
+        </b-button>
+        <b-button @click="onExportPDFProduct()">
+          Export PDF
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button variant="primary" @click="onCreateProduct()">New Product</b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button variant="outline-secondary" @click="onDeleteProduct(product)">
+          {{ product.is_init ? 'Discard' : 'Delete Product' }}
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button @click="onResetProduct">
+          Close
+        </b-button>
+      </b-button-group>
+    </ui-common-action>
+    <b-container :fluid="true">
+      <b-row class="mt-4">
+        <b-col>
+          <b-card no-body>
             <product-list
               :objs="products"
               :fields="[
@@ -48,50 +51,38 @@
               ]"
               @take="onTakeProduct"
             />
-            <ui-common-pagination
-              class="mt-3"
-              :totalRows="totalProduct"
-              :currentPage="queryProduct.page"
-              @paginate="onPaginateProduct"
-            />
           </b-card>
-        </div>
-      </div>
-    </div>
-    <!-- SEGMENT-B -->
-    <div v-if="segmentB" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <b-card :header="product.name">
+          <ui-common-pagination
+            class="mt-4"
+            :totalRows="totalProduct"
+            :currentPage="queryProduct.page"
+            @paginate="onPaginateProduct"
+          />
+        </b-col>
+        <b-col v-if="segmentA" cols="3">
+          <b-card header="Search Product">
+            <ui-common-search @search="onSearchProduct" />
+          </b-card>
+          <b-card class="mt-4" header="Filter Product by Date">
+            <ui-common-date-filter @filter="onFilterDateProduct" />
+          </b-card>
+        </b-col>
+        <b-col v-if="segmentB" cols="6">
+          <b-card header="Edit Product">
             <product-edit
               :obj="product"
               @edit="onEditProduct"
             />
           </b-card>
-        </div>
-        <div class="col-md-6">
-          <b-card header="Preview Product">
-            <product-detail
-              :obj="product"
-              :fields="[
-                'numcode',
-                'name',
-                'username',
-                'stock',
-                'cogs',
-                'price',
-                'created'
-              ]"
-            />
-          </b-card>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
 import UICommonHeader from '@/ui/commons/UICommonHeader'
+import UICommonAction from '@/ui/commons/UICommonAction'
 import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
@@ -99,7 +90,6 @@ import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
 import ProductMixin from '@/components/products/ProductMixin'
 import ProductList from '@/components/products/ProductList'
 import ProductEdit from '@/components/products/ProductEdit'
-import ProductDetail from '@/components/products/ProductDetail'
 
 export default {
   name: 'view-common-product',
@@ -111,12 +101,12 @@ export default {
   },
   components: {
     'ui-common-header': UICommonHeader,
+    'ui-common-action': UICommonAction,
     'ui-common-pagination': UICommonPagination,
     'ui-common-search': UICommonSearch,
     'ui-common-date-filter': UICommonDateFilter,
     'product-list': ProductList,
-    'product-edit': ProductEdit,
-    'product-detail': ProductDetail
+    'product-edit': ProductEdit
   },
   mixins: [
     ProductMixin
@@ -183,6 +173,40 @@ export default {
           await this.deleteProduct(product.id)
           await this.resetProduct()
         }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportCSVProduct () {
+      try {
+        const data = await this.exportCSVProduct()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-products-${date.toLocaleDateString()}.csv`
+        )
+        document.body.appendChild(link)
+        link.click()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportPDFProduct () {
+      try {
+        const data = await this.exportPDFProduct()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-Products-${date.toLocaleDateString()}.pdf`
+        )
+        document.body.appendChild(link)
+        link.click()
       } catch (error) {
         console.log(error)
       }

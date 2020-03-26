@@ -1,40 +1,35 @@
 <template>
   <div>
-    <ui-common-header app="Supplier Manager">
-      <b-nav-item-dropdown text="Actions" right>
-        <b-dropdown-item v-if="segmentA" @click="onCreateSupplier()" href="#">
+    <ui-common-header app="Supplier Manager" />
+    <ui-common-action>
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button @click="onExportCSVSupplier()">
+          Export CSV
+        </b-button>
+        <b-button @click="onExportPDFSupplier()">
+          Export PDF
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
+        <b-button variant="primary" @click="onCreateSupplier()">
           New Supplier
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onResetSupplier"
-          href="#"
-        >
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button variant="outline-secondary" @click="onDeleteSupplier(supplier)">
+          {{ supplier.is_init ? 'Discard ' : 'Delete Supplier' }}
+        </b-button>
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentB">
+        <b-button @click="onResetSupplier">
           Back
-        </b-dropdown-item>
-        <b-dropdown-item
-          v-if="segmentB"
-          @click="onDeleteSupplier(supplier)"
-          href="#"
-        >
-          {{ supplier.is_init ? 'Discard ' : 'Delete ' }}
-          {{ supplier.name }}
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </ui-common-header>
-    <!-- SEGMENT-A -->
-    <div v-if="segmentA" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-3">
-          <b-card header="Search Supplier">
-            <ui-common-search @search="onSearchSupplier" />
-          </b-card>
-          <b-card class="mt-4" header="Filter Supplier by Date">
-            <ui-common-date-filter @filter="onFilterDateSupplier" />
-          </b-card>
-        </div>
-        <div class="col-md-9">
-          <b-card header="Suppliers">
+        </b-button>
+      </b-button-group>
+    </ui-common-action>
+    <b-container class="mb-4" :fluid="true">
+      <b-row>
+        <b-col>
+          <b-card no-body>
             <supplier-list
               :objs="suppliers"
               :fields="[
@@ -45,48 +40,38 @@
               ]"
               @take="onTakeSupplier"
             />
-            <ui-common-pagination
-              class="mt-3"
-              :totalRows="totalSupplier"
-              :currentPage="querySupplier.page"
-              @paginate="onPaginateSupplier"
-            />
           </b-card>
-        </div>
-      </div>
-    </div>
-    <!-- SEGMENT-B -->
-    <div v-if="segmentB" class="container-fluid">
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <b-card :header="supplier.name">
+          <ui-common-pagination
+            class="mt-4"
+            :totalRows="totalSupplier"
+            :currentPage="querySupplier.page"
+            @paginate="onPaginateSupplier"
+          />
+        </b-col>
+         <b-col v-if="segmentA" cols="3">
+          <b-card header="Search Supplier">
+            <ui-common-search @search="onSearchSupplier" />
+          </b-card>
+          <b-card class="mt-4" header="Filter Supplier by Date">
+            <ui-common-date-filter @filter="onFilterDateSupplier" />
+          </b-card>
+        </b-col>
+        <b-col v-if="segmentB" cols="6">
+          <b-card header="Edit Supplier">
             <supplier-edit
               :obj="supplier"
               @edit="onEditSupplier"
             />
           </b-card>
-        </div>
-        <div class="col-md-6">
-          <b-card header="Supplier Preview">
-            <supplier-detail
-              :obj="supplier"
-              :fields="[
-                'numcode',
-                'name',
-                'phone',
-                'address',
-                'created'
-              ]"
-            />
-          </b-card>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
 import UICommonHeader from '@/ui/commons/UICommonHeader'
+import UICommonAction from '@/ui/commons/UICommonAction'
 import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
@@ -106,6 +91,7 @@ export default {
   },
   components: {
     'ui-common-header': UICommonHeader,
+    'ui-common-action': UICommonAction,
     'ui-common-pagination': UICommonPagination,
     'ui-common-search': UICommonSearch,
     'ui-common-date-filter': UICommonDateFilter,
@@ -179,6 +165,40 @@ export default {
           await this.deleteSupplier(supplier.id)
           await this.resetSupplier()
         }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportCSVSupplier () {
+      try {
+        const data = await this.exportCSVSupplier()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-suppliers-${date.toLocaleDateString()}.csv`
+        )
+        document.body.appendChild(link)
+        link.click()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async onExportPDFSupplier () {
+      try {
+        const data = await this.exportPDFSupplier()
+        const url = window.URL.createObjectURL(new Blob([data]))
+        const link = document.createElement('a')
+        const date = new Date()
+        link.href = url
+        link.setAttribute(
+          'download',
+          `report-suppliers-${date.toLocaleDateString()}.pdf`
+        )
+        document.body.appendChild(link)
+        link.click()
       } catch (error) {
         console.log(error)
       }

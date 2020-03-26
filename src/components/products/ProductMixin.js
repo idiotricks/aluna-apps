@@ -1,7 +1,7 @@
 export default {
   data () {
     return {
-      product: {},
+      product: null,
       products: [],
       totalProduct: 0,
       queryProduct: {
@@ -58,6 +58,10 @@ export default {
       this.product = data
     },
     async getProduct (id) {
+      if (!id) {
+        this.product = id
+        return
+      }
       const { data } = await this.$http.get(
         this.buildTargetProduct([id]),
         this.buildConfigProduct({
@@ -88,7 +92,27 @@ export default {
           'Authorization': localStorage.getItem('token')
         }, false)
       )
-      this.product = {}
+      this.product = null
+    },
+    async exportCSVProduct () {
+      const { data } = await this.$http.get(
+        this.buildTargetProduct(['export_csv']),
+        this.buildConfigProduct({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/csv'
+        }, true)
+      )
+      return data
+    },
+    async exportPDFProduct () {
+      const { data } = await this.$http.get(
+        this.buildTargetProduct(['export_pdf']),
+        this.buildConfigProduct({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/pdf'
+        }, true)
+      )
+      return data
     },
     setQueryPageProduct (page) {
       this.queryProduct.page = page

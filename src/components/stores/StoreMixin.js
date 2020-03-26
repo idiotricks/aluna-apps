@@ -1,12 +1,12 @@
 export default {
   data () {
     return {
-      store: {},
+      store: null,
       stores: [],
       totalStore: 0,
       queryStore: {
         page: 1,
-        search: '',
+        search: null,
         is_init: false
       }
     }

@@ -1,7 +1,7 @@
 export default {
   data () {
     return {
-      customer: {},
+      customer: null,
       customers: [],
       totalCustomer: 0,
       queryCustomer: {
@@ -58,6 +58,10 @@ export default {
       this.customer = data
     },
     async getCustomer (id) {
+      if (!id) {
+        this.customer = id
+        return
+      }
       const { data } = await this.$http.get(
         this.buildTargetCustomer([id]),
         this.buildConfigCustomer({
@@ -88,7 +92,27 @@ export default {
           'Authorization': localStorage.getItem('token')
         }, false)
       )
-      this.customer = {}
+      this.customer = null
+    },
+    async exportCSVCustomer () {
+      const { data } = await this.$http.get(
+        this.buildTargetCustomer(['export_csv']),
+        this.buildConfigCustomer({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/csv'
+        }, true)
+      )
+      return data
+    },
+    async exportPDFCustomer () {
+      const { data } = await this.$http.get(
+        this.buildTargetCustomer(['export_pdf']),
+        this.buildConfigCustomer({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/pdf'
+        }, true)
+      )
+      return data
     },
     setQueryPageCustomer (page) {
       this.queryCustomer.page = page

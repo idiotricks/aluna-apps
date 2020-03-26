@@ -52,9 +52,7 @@ export default {
   },
   methods: {
     edit (id, field, value) {
-      if (this.obj[field] !== value) {
-        this.$emit('edit', id, field, value)
-      }
+      this.$emit('edit', id, field, value)
     }
   },
   watch: {

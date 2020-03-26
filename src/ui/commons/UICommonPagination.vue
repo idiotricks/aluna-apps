@@ -2,6 +2,7 @@
   <div v-if="totalRows">
     <b-pagination
       v-model="currPage"
+      size="sm"
       :total-rows="totalRows"
       :per-page="perPage"
       @change="paginate"

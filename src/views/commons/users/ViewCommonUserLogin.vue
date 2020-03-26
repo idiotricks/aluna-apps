@@ -32,6 +32,7 @@ export default {
     async onSignInUser (username, password) {
       try {
         await this.signInUser({username, password})
+        this.$router.push({name: 'view-common-user'})
       } catch (error) {
         console.log(error)
       }

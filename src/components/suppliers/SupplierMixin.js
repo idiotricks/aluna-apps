@@ -1,7 +1,7 @@
 export default {
   data () {
     return {
-      supplier: {},
+      supplier: null,
       suppliers: [],
       totalSupplier: 0,
       querySupplier: {
@@ -58,6 +58,10 @@ export default {
       this.supplier = data
     },
     async getSupplier (id) {
+      if (!id) {
+        this.supplier = id
+        return
+      }
       const { data } = await this.$http.get(
         this.buildTargetSupplier([id]),
         this.buildConfigSupplier({
@@ -88,7 +92,27 @@ export default {
           'Authorization': localStorage.getItem('token')
         }, false)
       )
-      this.supplier = {}
+      this.supplier = null
+    },
+    async exportCSVSupplier () {
+      const { data } = await this.$http.get(
+        this.buildTargetSupplier(['export_csv']),
+        this.buildConfigSupplier({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/csv'
+        }, true)
+      )
+      return data
+    },
+    async exportPDFSupplier () {
+      const { data } = await this.$http.get(
+        this.buildTargetSupplier(['export_pdf']),
+        this.buildConfigSupplier({
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/pdf'
+        }, true)
+      )
+      return data
     },
     setQueryPageSupplier (page) {
       this.querySupplier.page = page

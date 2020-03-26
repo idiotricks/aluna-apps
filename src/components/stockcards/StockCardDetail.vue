@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'item-in-detail',
+  name: 'stock-card-detail',
   props: ['obj', 'fields']
 }
 </script>
