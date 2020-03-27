@@ -57,6 +57,8 @@ import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 import StockCardMixin from '@/components/stockcards/StockCardMixin'
 import StockCardList from '@/components/stockcards/StockCardList'
 
@@ -77,7 +79,8 @@ export default {
     'stock-card-list': StockCardList
   },
   mixins: [
-    StockCardMixin
+    StockCardMixin,
+    HelperAlert
   ],
   methods: {
     async onAllStockCard () {
@@ -85,6 +88,7 @@ export default {
         await this.allStockCard()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchStockCard (search) {
@@ -93,6 +97,7 @@ export default {
         await this.allStockCard()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDateFilterStockCard (startDate, endDate) {
@@ -101,6 +106,7 @@ export default {
         await this.allStockCard()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPaginateStockCard (page) {
@@ -109,6 +115,7 @@ export default {
         await this.allStockCard()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportCSVStockCard () {
@@ -126,6 +133,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportPDFStockCard () {
@@ -143,6 +151,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },

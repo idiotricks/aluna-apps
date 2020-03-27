@@ -20,12 +20,15 @@
 import UserMixin from '@/components/users/UserMixin'
 import UserSignin from '@/components/users/UserSignin'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 export default {
   name: 'view-common-user-login',
   components: {
     'user-signin': UserSignin
   },
   mixins: [
+    HelperAlert,
     UserMixin
   ],
   methods: {
@@ -35,6 +38,7 @@ export default {
         this.$router.push({name: 'view-common-user'})
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   }

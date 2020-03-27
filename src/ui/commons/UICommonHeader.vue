@@ -17,9 +17,9 @@
             <b-dropdown-item to="suppliers">Supplier</b-dropdown-item>
             <b-dropdown-item to="products">Produk</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Transaction">
-            <b-dropdown-item to="stock-ins">Stock Masuk</b-dropdown-item>
-            <b-dropdown-item to="stock-outs">Stock Keluar</b-dropdown-item>
+          <b-nav-item-dropdown text="Transaksi">
+            <b-dropdown-item to="stock-ins">Stok Produk Masuk</b-dropdown-item>
+            <b-dropdown-item to="stock-outs">Stok Produk Keluar</b-dropdown-item>
             <b-dropdown-item to="stock-cards">Kartu Stok</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Pengaturan">
@@ -64,7 +64,6 @@ export default {
     }
   },
   created () {
-    this.flashMessage.setStrategy('single')
     this.$http.interceptors.request.use((config) => {
       // trigger 'loading=true' event here
       this.show = true
@@ -72,11 +71,6 @@ export default {
     }, (error) => {
       // trigger 'loading=false' event here
       this.show = false
-      this.$swal({
-        icon: 'warning',
-        title: 'An Error Occured',
-        text: error.message | 'Unknown error, contact the developer immediately'
-      })
       // this.stopShow()
       return Promise.reject(error)
     })
@@ -89,11 +83,6 @@ export default {
     }, (error) => {
       // trigger 'loading=false' event here
       this.show = false
-      this.$swal({
-        icon: 'danger',
-        title: 'An Error Occured',
-        text: error.message | 'Unknown error, contact the developer immediately'
-      })
       return Promise.reject(error)
     })
   }

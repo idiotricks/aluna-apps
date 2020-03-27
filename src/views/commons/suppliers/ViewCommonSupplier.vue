@@ -76,6 +76,8 @@ import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 import SupplierMixin from '@/components/suppliers/SupplierMixin'
 import SupplierList from '@/components/suppliers/SupplierList'
 import SupplierEdit from '@/components/suppliers/SupplierEdit'
@@ -100,6 +102,7 @@ export default {
     'supplier-detail': SupplierDetail
   },
   mixins: [
+    HelperAlert,
     SupplierMixin
   ],
   methods: {
@@ -108,6 +111,7 @@ export default {
         await this.allSupplier()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeSupplier (supplier) {
@@ -117,6 +121,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCreateSupplier () {
@@ -127,6 +132,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditSupplier (id, field, value) {
@@ -135,6 +141,7 @@ export default {
         await this.allSupplier()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     onResetSupplier () {
@@ -144,6 +151,7 @@ export default {
         this.segmentB = false
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDeleteSupplier (supplier) {
@@ -167,6 +175,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportCSVSupplier () {
@@ -184,6 +193,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportPDFSupplier () {
@@ -201,6 +211,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchSupplier (search) {
@@ -209,6 +220,7 @@ export default {
         await this.allSupplier()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPaginateSupplier (page) {
@@ -217,6 +229,7 @@ export default {
         this.allSupplier()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onFilterDateSupplier (startDate, endDate) {
@@ -225,6 +238,7 @@ export default {
         await this.allSupplier()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },

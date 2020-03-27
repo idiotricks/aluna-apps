@@ -2,9 +2,9 @@ export default {
   methods: {
     async deleteConfirm (data) {
       return this.$bvModal.msgBoxConfirm(
-        `Are you sure you want to discard ${data} ?`,
+        `Anda yakin ingin membuang ${data} ?`,
         {
-          title: 'Discard Confirmation',
+          title: 'Konfirmasi Buang',
           size: 'sm',
           buttonSize: 'sm',
           okVariant: 'danger',
@@ -13,8 +13,8 @@ export default {
       )
     },
     async deleteSuccess () {
-      return this.$bvModal.msgBoxOk('Data successfully removed', {
-        title: 'Success',
+      return this.$bvModal.msgBoxOk('Berhasil membuang', {
+        title: 'Berhasil',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'success',
@@ -57,6 +57,55 @@ export default {
           centered: true
         }
       )
+    },
+    async messageError (message) {
+      return this.$bvModal.msgBoxConfirm(message,
+        {
+          title: 'Ups!',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          centered: true
+        }
+      )
+    },
+    async messageWarning (message) {
+      return this.$bvModal.msgBoxConfirm(message,
+        {
+          title: 'Peringatan!',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'warning',
+          centered: true
+        }
+      )
+    },
+    async messageSuccess (message) {
+      return this.$bvModal.msgBoxConfirm(message,
+        {
+          title: 'Berhasil!',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'warning',
+          centered: true
+        }
+      )
+    },
+    async errorHandler (error) {
+      const response = error.response
+
+      if (response) {
+        if (response.status !== 500) {
+          this.messageError(
+            error.response.data.fallback_message
+          )
+        } else {
+          console.dir(error.message)
+          this.messageError(error.message)
+        }
+      } else {
+        this.messageError(error.message || 'Something when wrong!')
+      }
     }
   }
 }

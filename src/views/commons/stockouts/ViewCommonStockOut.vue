@@ -305,6 +305,7 @@ export default {
         this.segmentB = false
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeStockOut (stockOut) {
@@ -317,27 +318,26 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCreateStockOut () {
       try {
         await this.createStockOut()
+        await this.getCustomer(this.stockOut.customer)
         this.setQueryStockOutItemOut(this.stockOut.id)
         await this.allItemOut()
         this.segmentA = false
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditStockOut (id, field, value) {
       try {
         if (this.stockOut.is_calculate) {
-          this.$swal({
-            icon: 'info',
-            title: 'Stock is Calculated',
-            text: 'You cannot continue this action to maintain stock data'
-          })
+          this.messageWarning('Proses ini tidak diizinkan karena stok sudah di adjust')
           return
         }
         await this.editStockOut(id, field, value)
@@ -345,6 +345,7 @@ export default {
         await this.allStockOut()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDeleteStockOut (stockOut) {
@@ -360,6 +361,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchStockOut (search) {
@@ -368,6 +370,7 @@ export default {
         await this.allStockOut()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPaginateStockOut (page) {
@@ -376,6 +379,7 @@ export default {
         await this.allStockOut()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDateFilterStockOut (startDate, endDate) {
@@ -384,23 +388,21 @@ export default {
         await this.allStockOut()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCalculateStockOut (stockOut) {
       try {
         if (this.stockOut.is_calculate) {
-          this.$swal({
-            icon: 'info',
-            title: 'Stock is Calculated',
-            text: 'You cannot continue this action to maintain stock data'
-          })
+          this.messageWarning('Proses ini tidak diizinkan karena stok sudah di adjust')
           return
         }
         await this.calculateStockOut(stockOut.id)
         await this.allStockOut()
-        this.$swal('Success adding stock')
+        this.messageSuccess('Stok berhasil di adjust')
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportCSVStockOut () {
@@ -418,6 +420,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportPDFStockOut () {
@@ -435,6 +438,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPrintPDFStockOut (stockOut) {
@@ -452,6 +456,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onAllCustomer () {
@@ -461,6 +466,7 @@ export default {
         this.$refs['modalAllCustomer'].show()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeCustomer (customer) {
@@ -471,6 +477,7 @@ export default {
         this.$refs['modalAllCustomer'].hide()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchCustomer (search) {
@@ -479,6 +486,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCreateCustomer () {
@@ -487,6 +495,7 @@ export default {
         this.$refs['modalCreateCustomer'].show()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditCustomer (id, field, value) {
@@ -495,6 +504,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onAllProduct () {
@@ -503,6 +513,7 @@ export default {
         this.$refs['modalAllProduct'].show()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeProduct (product) {
@@ -521,6 +532,7 @@ export default {
         this.$refs['modalEditItemOut'].show()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchProduct (search) {
@@ -529,60 +541,42 @@ export default {
         await this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeItemOut (itemOut) {
       try {
         if (this.stockOut.is_calculate) {
-          this.$swal({
-            icon: 'info',
-            title: 'Stock is Calculated',
-            text: 'You cannot continue this action to maintain stock data'
-          })
+          this.messageWarning('Proses ini tidak diizinkan karena stok sudah di adjust')
           return
         }
         await this.getItemOut(itemOut.id)
         this.$refs['modalEditItemOut'].show()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditItemOut (id, field, value) {
       try {
         if (this.stockOut.is_calculate) {
-          this.$swal({
-            icon: 'info',
-            title: 'Stock is Calculated',
-            text: 'You cannot continue this action to maintain stock data'
-          })
+          this.messageWarning('Proses ini tidak diizinkan karena stok sudah di adjust')
           return
         }
         await this.editItemOut(id, field, value)
         await this.allItemOut()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDeleteItemOut (itemOut) {
       try {
         if (this.stockOut.is_calculate) {
-          this.$swal({
-            icon: 'info',
-            title: 'Stock is Calculated',
-            text: 'You cannot continue this action to maintain stock data'
-          })
+          this.messageWarning('Proses ini tidak diizinkan karena stok sudah di adjust')
           return
         }
-        const confirm = await this.$bvModal.msgBoxConfirm(
-          `Are you sure to delete ?`,
-          {
-            title: 'Delete Confirmation',
-            size: 'sm',
-            buttonSize: 'sm',
-            okVariant: 'danger',
-            centered: true
-          }
-        )
+        const confirm = await this.deleteConfirm(itemOut.product_name)
         if (confirm) {
           this.$refs['modalEditItemOut'].hide()
           await this.deleteItemOut(itemOut.id)
@@ -590,6 +584,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },

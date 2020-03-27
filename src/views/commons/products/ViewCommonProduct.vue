@@ -87,6 +87,8 @@ import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 import ProductMixin from '@/components/products/ProductMixin'
 import ProductList from '@/components/products/ProductList'
 import ProductEdit from '@/components/products/ProductEdit'
@@ -109,7 +111,8 @@ export default {
     'product-edit': ProductEdit
   },
   mixins: [
-    ProductMixin
+    ProductMixin,
+    HelperAlert
   ],
   methods: {
     async onAllProduct () {
@@ -117,6 +120,7 @@ export default {
         await this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeProduct (product) {
@@ -126,6 +130,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCreateProduct () {
@@ -136,6 +141,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditProduct (id, field, value) {
@@ -144,6 +150,7 @@ export default {
         await this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     onResetProduct () {
@@ -153,6 +160,7 @@ export default {
         this.segmentB = false
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDeleteProduct (product) {
@@ -175,6 +183,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportCSVProduct () {
@@ -192,6 +201,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportPDFProduct () {
@@ -209,6 +219,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchProduct (search) {
@@ -217,6 +228,7 @@ export default {
         await this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPaginateProduct (page) {
@@ -225,6 +237,7 @@ export default {
         this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onFilterDateProduct (startDate, endDate) {
@@ -233,6 +246,7 @@ export default {
         await this.allProduct()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },

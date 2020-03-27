@@ -76,6 +76,8 @@ import UICommonPagination from '@/ui/commons/UICommonPagination'
 import UICommonSearch from '@/ui/commons/UICommonSearch'
 import UICommonDateFilter from '@/ui/commons/UICommonDateFilter'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 import CustomerMixin from '@/components/customers/CustomerMixin'
 import CustomerList from '@/components/customers/CustomerList'
 import CustomerEdit from '@/components/customers/CustomerEdit'
@@ -100,7 +102,8 @@ export default {
     'customer-detail': CustomerDetail
   },
   mixins: [
-    CustomerMixin
+    CustomerMixin,
+    HelperAlert
   ],
   methods: {
     async onAllCustomer () {
@@ -108,6 +111,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onTakeCustomer (customer) {
@@ -117,6 +121,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onCreateCustomer () {
@@ -127,6 +132,7 @@ export default {
         this.segmentB = true
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditCustomer (id, field, value) {
@@ -135,6 +141,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     onResetCustomer () {
@@ -144,6 +151,7 @@ export default {
         this.segmentB = false
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onDeleteCustomer (customer) {
@@ -166,6 +174,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onSearchCustomer (search) {
@@ -174,6 +183,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onPaginateCustomer (page) {
@@ -182,6 +192,7 @@ export default {
         this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onFilterDateCustomer (startDate, endDate) {
@@ -190,6 +201,7 @@ export default {
         await this.allCustomer()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportCSVCustomer () {
@@ -207,6 +219,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onExportPDFCustomer () {
@@ -224,6 +237,7 @@ export default {
         link.click()
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },

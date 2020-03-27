@@ -16,6 +16,8 @@
 <script>
 import UICommonHeader from '@/ui/commons/UICommonHeader'
 
+import HelperAlert from '@/helpers/HelperAlert'
+
 import UserMixin from '@/components/users/UserMixin'
 import UserEdit from '@/components/users/UserEdit'
 
@@ -26,6 +28,7 @@ export default {
     'user-edit': UserEdit
   },
   mixins: [
+    HelperAlert,
     UserMixin
   ],
   methods: {
@@ -35,6 +38,7 @@ export default {
         await this.getUser(id)
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     },
     async onEditUser (id, field, value) {
@@ -43,6 +47,7 @@ export default {
         await this.getUser(localStorage.getItem('user_id'))
       } catch (error) {
         console.log(error)
+        this.errorHandler(error)
       }
     }
   },
