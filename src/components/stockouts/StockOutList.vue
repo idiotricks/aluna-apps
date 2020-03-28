@@ -10,6 +10,10 @@
       :fields="fields"
       @row-clicked="take"
     >
+      <template v-slot:cell(is_calculate)="data">
+        <b-badge v-if="data.item.is_calculate" variant="success">sudah naik</b-badge>
+        <b-badge v-if="!data.item.is_calculate" variant="warning">belum dinaikan</b-badge>
+      </template>
       <template v-slot:table-busy>
         Data not yet available!
       </template>

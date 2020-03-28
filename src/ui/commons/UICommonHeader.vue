@@ -14,13 +14,13 @@
         <b-navbar-nav>
           <b-nav-item-dropdown text="Master">
             <b-dropdown-item to="customers">Pelanggan</b-dropdown-item>
-            <b-dropdown-item to="suppliers">Supplier</b-dropdown-item>
+            <b-dropdown-item to="suppliers">Pemasok</b-dropdown-item>
             <b-dropdown-item to="products">Produk</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Transaksi">
-            <b-dropdown-item to="stock-ins">Stok Produk Masuk</b-dropdown-item>
-            <b-dropdown-item to="stock-outs">Stok Produk Keluar</b-dropdown-item>
-            <b-dropdown-item to="stock-cards">Kartu Stok</b-dropdown-item>
+            <b-dropdown-item to="stock-ins">Transaksi Produk Masuk</b-dropdown-item>
+            <b-dropdown-item to="stock-outs">Transaksi Produk Keluar</b-dropdown-item>
+            <b-dropdown-item to="stock-cards">Kartu Stok Produk</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Pengaturan">
             <b-dropdown-item to="user">Pengguna</b-dropdown-item>

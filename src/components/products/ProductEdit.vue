@@ -2,15 +2,15 @@
   <div>
     <div v-if="lodat">
       <div class="form-group">
-        <label>Product Number</label>
+        <label>Kode Produk</label>
         <input class="form-control" type="text" disabled :value="lodat.numcode" />
       </div>
       <div class="form-group">
-        <label>Name</label>
+        <label>Nama</label>
         <input class="form-control" type="text" v-model="lodat.name" @change="edit(lodat.id, 'name', lodat.name)" />
       </div>
       <div class="form-group">
-        <label>Stock</label>
+        <label>Stok</label>
         <b-form-input
           type="number"
           :value="lodat.stock"
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="form-group">
-        <label>COGS</label>
+        <label>Harga Beli</label>
         <b-form-input
           type="number"
           v-model="lodat.cogs"
@@ -28,7 +28,7 @@
         />
       </div>
       <div class="form-group">
-        <label>Price</label>
+        <label>Harga Jual</label>
         <b-form-input
           type="number"
           v-model="lodat.price"

@@ -2,7 +2,7 @@
   <div>
     <div v-if="lodat">
       <div class="form-group">
-        <label>Supplier Number</label>
+        <label>Kode Pemasok</label>
         <input
           class="form-control"
           type="text"
@@ -11,7 +11,7 @@
         />
       </div>
       <div class="form-group">
-        <label>Name</label>
+        <label>Nama</label>
         <input
           class="form-control"
           type="text"
@@ -20,7 +20,7 @@
         />
       </div>
       <div class="form-group">
-        <label>Phone</label>
+        <label>Nomer Telepon</label>
         <input
           class="form-control"
           type="text"
@@ -29,7 +29,7 @@
         />
       </div>
       <div class="form-group">
-        <label>Address</label>
+        <label>Alamat</label>
         <textarea
           class="form-control"
           v-model="lodat.address"

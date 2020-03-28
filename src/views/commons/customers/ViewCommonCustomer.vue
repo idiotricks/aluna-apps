@@ -1,63 +1,97 @@
 <template>
   <div>
-    <ui-common-header app="Customer Manager" />
+    <ui-common-header app="Kelola Pelanggan" />
     <ui-common-action>
       <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalCustomer"
+          :currentPage="queryCustomer.page"
+          @paginate="onPaginateCustomer"
+        />
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
         <b-button @click="onExportCSVCustomer()">
-          Export CSV
+          Ekspor CSV
         </b-button>
         <b-button @click="onExportPDFCustomer()">
-          Export PDF
+          Ekspor PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
         <b-button variant="primary" @click="onCreateCustomer()">
-          New Customer
+          Pelanggan Baru
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button variant="outline-secondary" @click="onDeleteCustomer(customer)">
-          {{ customer.is_init ? 'Discard ' : 'Delete ' }} Customer
+          {{ customer.is_init ? 'Batalkan' : 'Hapus' }}
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button @click="onResetCustomer">
-          Close
+          Tutup
         </b-button>
       </b-button-group>
     </ui-common-action>
-    <b-container :fluid="true">
+    <b-container :fluid="true" class="mb-4">
       <b-row class="mt-4">
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <customer-list
               :objs="customers"
               :fields="[
-                'numcode',
-                'name',
-                'phone',
-                'created',
+                {key: 'numcode', label: 'Kode Pelanggan'},
+                {key: 'name', label: 'Nama'},
+                {key: 'phone', label: 'Nomer Telepon'},
+                {key: 'created_date', label: 'Dibuat'}
               ]"
               @take="onTakeCustomer"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalCustomer"
-            :currentPage="queryCustomer.page"
-            @paginate="onPaginateCustomer"
-          />
         </b-col>
         <b-col v-if="segmentA" cols="3">
-          <b-card header="Search Customer">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Pelanggan"
+          >
+            <p>
+              <small class="text-muted">
+                Cari pelanggan berdasarkan kode pelanggan atau nama pelanggan
+              </small>
+            </p>
             <ui-common-search @search="onSearchCustomer" />
           </b-card>
-          <b-card class="mt-4" header="Filter Customer by Date">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            header="Filter Pelanggan dengan Tanggal"
+          >
+            <p>
+              <small class="text-muted">
+                Filter pelanggan berdasarkan
+                tanggal dibuat dengan rentangan
+                tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onFilterDateCustomer" />
           </b-card>
         </b-col>
         <b-col v-if="segmentB" cols="6">
-          <b-card header="Edit Customer">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Ubah Data Pelanggan"
+          >
             <customer-edit
               :obj="customer"
               @edit="onEditCustomer"

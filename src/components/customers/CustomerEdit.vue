@@ -2,19 +2,19 @@
   <div>
     <div v-if="lodat">
       <div class="form-group">
-        <label>Customer Number</label>
+        <label>Kode Pelanggan</label>
         <input class="form-control" type="text" disabled :value="lodat.numcode" />
       </div>
       <div class="form-group">
-        <label>Name</label>
+        <label>Nama</label>
         <input class="form-control" type="text" v-model="lodat.name" @change="edit(lodat.id, 'name', lodat.name)" />
       </div>
       <div class="form-group">
-        <label>Phone</label>
+        <label>Nomer Telepon</label>
         <input class="form-control" type="text" v-model="lodat.phone" @change="edit(lodat.id, 'phone', lodat.phone)" />
       </div>
       <div class="form-group">
-        <label>Address</label>
+        <label>Alamat</label>
         <textarea class="form-control" v-model="lodat.address" @change="edit(lodat.id, 'address', lodat.address)"></textarea>
       </div>
     </div>

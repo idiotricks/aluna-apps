@@ -1,14 +1,14 @@
 <template>
   <div>
     <div>
-      <input
+      <b-form-input
         type="text"
-        placeholder="Search"
-        aria-label="Search"
+        :placeholder="placeholder"
         v-model="q"
         class="form-control"
-        @keypress.enter="search"
-      />
+        @change="search"
+      >
+      </b-form-input>
     </div>
   </div>
 </template>
@@ -18,11 +18,13 @@ export default {
   name: 'ui-common-search',
   data () {
     return {
-      q: ''
+      q: '',
+      placeholder: 'Pencarian'
     }
   },
   methods: {
     search () {
+      this.placeholder = this.q || 'Pencarian'
       this.$emit('search', this.q)
     }
   }

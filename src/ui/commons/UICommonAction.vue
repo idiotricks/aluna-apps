@@ -1,7 +1,7 @@
 <template>
   <b-navbar
     :sticky="true"
-    class="mb-4 d-flex justify-content-end"
+    class="mb-4 d-flex justify-content-center"
     variant="dark"
     type="dark"
   >

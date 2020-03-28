@@ -1,44 +1,51 @@
 <template>
   <div>
-    <ui-common-header app="Stock In Manager" />
+    <ui-common-header app="Kelola Transaksi Produk Masuk" />
     <ui-common-action>
       <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalStockIn"
+          :currentPage="queryStockIn.page"
+          @paginate="onPaginateStockIn"
+        />
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
         <b-button @click="onExportCSVStockIn()">
-          Export CSV
+          Ekspor CSV
         </b-button>
         <b-button @click="onExportPDFStockIn()">
-          Export PDF
+          Ekspor PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
         <b-button variant="primary" @click="onCreateStockIn()">
-          New Stock In
+          Buat Transaksi Masuk
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
-        <b-button v-if="!stockIn.is_calculate" @click="onCalculateStockIn(stockIn)">
-          Stock Adjustment
+        <b-button variant="primary" v-if="!stockIn.is_calculate" @click="onCalculateStockIn(stockIn)">
+          Naikan Stok
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="!stockIn.is_calculate && stockIn.supplier" @click="() => $refs['modalCreateSupplier'].show()">
-          Edit Supplier
+          Ubah Pemasok
         </b-button>
         <b-button v-if="!stockIn.is_calculate && stockIn.supplier" @click="onEditStockIn(stockIn.id, 'supplier', null)">
-          Remove Supplier
+          Hapus Pemasok
         </b-button>
         <b-button v-if="!stockIn.is_calculate && !stockIn.supplier" @click="onAllSupplier()">
-          Browse Supplier
+          Cari Pemasok
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="!stockIn.is_calculate" @click="onAllProduct()">
-          Browse Product
+          Cari Produk
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="stockIn.is_calculate" @click="onPrintPDFStockIn(stockIn)">
-          Save to PDF
+          Simpan ke PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
@@ -48,88 +55,137 @@
           @click="onDeleteStockIn(stockIn)"
           title="Trash"
         >
-          To Trash
+          {{ stockIn.is_init ? 'Batalkan' : 'Hapus' }}
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button @click="onAllStockIn()">
-          Close
+          Tutup
         </b-button>
       </b-button-group>
     </ui-common-action>
-    <div class="container-fluid">
+    <b-container :fluid="true" class="mb-4">
       <b-row>
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <stock-in-list
               :objs="stockIns"
               :fields="[
-                'numcode',
-                'date',
-                'supplier_name',
-                'supplier_phone',
-                'is_calculate'
+                {key: 'numcode', label: 'Kode Transaksi'},
+                {key: 'date', label: 'Tanggal'},
+                {key: 'supplier_name', label: 'Pemasok'},
+                {key: 'supplier_phone', label: 'Kontak Pemasok'},
+                {key: 'is_calculate', label: 'Status Stok'}
               ]"
               @take="onTakeStockIn"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalStockIn"
-            :currentPage="queryStockIn.page"
-            @paginate="onPaginateStockIn"
-          />
         </b-col>
         <b-col v-if="segmentA" cols="3">
-          <b-card header="Search Stock In">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Transaksi Produk Masuk"
+          >
+            <p>
+              <small class="text-muted">
+                Cari transaksi produk masuk berdasarkan kode transaksi,
+                nama pemasok atau nama pembuat transaksi
+              </small>
+            </p>
             <ui-common-search @search="onSearchStockIn" />
           </b-card>
-          <b-card class="mt-4" header="Filter Stock In by Date">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            header="Filter Transaksi Produk Masuk dengan Tanggal"
+          >
+            <p>
+              <small class="text-muted">
+                Filter transaksi produk masuk berdasarkan tanggal dibuat
+                dengan rentangan tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onDateFilterStockIn" />
           </b-card>
         </b-col>
         <b-col v-if="segmentB" cols="6">
-          <b-card v-if="!stockIn.is_calculate" header="Stock In">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            v-if="!stockIn.is_calculate"
+            header="Ubah Data Transaksi Produk Masuk"
+          >
             <stock-in-edit
               :obj="stockIn"
               @edit="onEditStockIn"
             />
           </b-card>
-          <b-card no-body v-if="stockIn.is_calculate" header="Stock In">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+            v-if="stockIn.is_calculate"
+            header="Transaksi Produk Masuk"
+          >
             <stock-in-detail
               :obj="stockIn"
               :fields="[
-                'numcode',
-                'date'
+                {key: 'numcode', label: 'Kode Transaksi'},
+                {key: 'date', label: 'Tanggal'}
               ]"
             />
           </b-card>
-          <b-card no-body class="mt-4" header="Supplier">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+            class="mt-4"
+            header="Pemasok"
+          >
             <supplier-detail :fields="[
-              'numcode',
-              'name',
-              'phone',
-              'address'
+              {key: 'numcode', label: 'Kode Pemasok'},
+              {key: 'name', label: 'Nama'},
+              {key: 'phone', label: 'Nomer Telepon'},
+              {key: 'address', label: 'Alamat'}
             ]" :obj="supplier" />
           </b-card>
-          <b-card no-body class="mt-4" header="Items">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+            class="mt-4"
+            header="Daftar Produk Terpilih"
+          >
             <item-in-list
               :objs="itemIns"
               :fields="[
-                'product_name',
-                'product_stock',
-                'quantity'
+                {key: 'product_name', label: 'Produk'},
+                {key: 'product_stock', label: 'Stok Produk'},
+                {key: 'quantity', label: 'Jumlah Stok Masuk'}
               ]"
               @take="onTakeItemIn"
             />
           </b-card>
         </b-col>
       </b-row>
-    </div>
+    </b-container>
     <!-- POPUP MODAL -->
     <b-modal
       ref="modalAllSupplier"
-      title="Suppliers"
+      title="Daftar Pemasok"
       hide-header-close
       hide-footer
       size="lg"
@@ -141,43 +197,64 @@
         <b-col cols="3">
           <b-button-group>
             <b-button block @click="onCreateSupplier">
-              New Supplier
+              Pemasok Baru
             </b-button>
           </b-button-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col cols="12">
-          <supplier-list
-            :objs="suppliers"
-            :fields="['numcode', 'name', 'phone']"
-            @take="onTakeSupplier"
-          />
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
+            <supplier-list
+              :objs="suppliers"
+              :fields="[
+                {key: 'numcode', label: 'Kode Pemasok'},
+                {key: 'name', label: 'Nama'},
+                {key: 'phone', label: 'Nomer Telepon'}
+              ]"
+              @take="onTakeSupplier"
+            />
+          </b-card>
         </b-col>
       </b-row>
     </b-modal>
     <b-modal
       ref="modalCreateSupplier"
-      title="Supplier"
+      title="Ubah Data Pemasok"
       hide-header-close
       hide-footer
       size="lg"
     >
       <b-row>
         <b-col>
-          <supplier-edit :obj="supplier" @edit="onEditSupplier" />
+          <supplier-edit
+            :obj="supplier"
+            @edit="onEditSupplier"
+          />
         </b-col>
       </b-row>
     </b-modal>
     <b-modal
       ref="modalAllProduct"
-      title="Products"
+      title="Daftar Produk"
       hide-header-close
       hide-footer
       size="lg"
     >
       <b-row class="mb-4">
         <b-col cols="12">
+          <p>
+            <small class="text-muted">
+              Cari produk berdasarkan
+              kode produk, nama produk
+              atau pembuat produk
+            </small>
+          </p>
           <ui-common-search
             @search="onSearchProduct"
           />
@@ -185,36 +262,46 @@
       </b-row>
       <b-row>
         <b-col cols="12">
-          <product-list
-            :objs="products"
-            :fields="[
-              'numcode',
-              'name',
-              'cogs',
-              'price',
-              'stock'
-            ]"
-            @take="onTakeProduct"
-          />
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
+            <product-list
+              :objs="products"
+              :fields="[
+                {key: 'numcode', label: 'Kode Produk'},
+                {key: 'name', label: 'Nama'},
+                {key: 'stock', label: 'Stok Tersedia'},
+                {key: 'cogs', label: 'Harga Beli (Rp)'},
+                {key: 'price', label: 'Harga Jual (Rp)'}
+              ]"
+              @take="onTakeProduct"
+            />
+          </b-card>
         </b-col>
       </b-row>
     </b-modal>
     <b-modal
       ref="modalEditItemIn"
-      title="Item"
+      title="Ubah Data Produk Terpilih"
       hide-header-close
       hide-footer
       size="lg"
     >
       <b-row>
         <b-col>
-          <item-in-edit @edit="onEditItemIn" :obj="itemIn" />
+          <item-in-edit
+            @edit="onEditItemIn"
+            :obj="itemIn"
+          />
         </b-col>
       </b-row>
       <b-row>
         <b-col>
           <b-button-group>
-            <b-button @click="onDeleteItemIn(itemIn)">Delete</b-button>
+            <b-button @click="onDeleteItemIn(itemIn)">Hapus</b-button>
           </b-button-group>
         </b-col>
       </b-row>
@@ -297,9 +384,7 @@ export default {
     async onTakeStockIn (stockIn) {
       try {
         await this.getStockIn(stockIn.id)
-        if (stockIn.supplier) {
-          await this.getSupplier(stockIn.supplier)
-        }
+        await this.getSupplier(stockIn.supplier)
         this.setQueryStockInItemIn(this.stockIn.id)
         await this.allItemIn()
         this.segmentA = false
@@ -323,6 +408,7 @@ export default {
       }
     },
     async onEditStockIn (id, field, value) {
+      console.log(value)
       try {
         if (this.stockIn.is_calculate) {
           this.messageWarning(
@@ -331,6 +417,7 @@ export default {
           return
         }
         await this.editStockIn(id, field, value)
+        await this.getSupplier(this.stockIn.supplier)
         await this.allStockIn()
       } catch (error) {
         console.log(error)
@@ -344,7 +431,6 @@ export default {
           this.segmentA = true
           this.segmentB = false
           this.deleteStockIn(stockIn.id)
-          this.messageSuccess('Berhasil membuang')
           this.resetStockIn()
           this.allStockIn()
         }
@@ -500,6 +586,7 @@ export default {
     },
     async onAllProduct () {
       try {
+        this.setQuerySearchProduct(null)
         await this.allProduct()
         this.$refs['modalAllProduct'].show()
       } catch (error) {
@@ -510,10 +597,6 @@ export default {
     async onTakeProduct (product) {
       try {
         await this.getProduct(product.id)
-        if (this.product.stock <= 0) {
-          alert('Stock not available')
-          return
-        }
         await this.createItemIn({
           stockin: this.stockIn.id,
           product: this.product.id,

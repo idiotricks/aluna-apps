@@ -1,74 +1,97 @@
 <template>
   <div>
-    <ui-common-header app="Product Manager" />
+    <ui-common-header app="Kelola Produk" />
     <ui-common-action>
-      <!-- TODO: pagination top -->
-      <!-- <b-button-group v-if="segmentA">
-        <b-pagination
-          v-model="queryProduct.page"
-          size="sm"
-          :total-rows="totalProduct"
-          :per-page="10"
-          @change="onPaginateProduct"
+      <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalProduct"
+          :currentPage="queryProduct.page"
+          @paginate="onPaginateProduct"
         />
-      </b-button-group> -->
+      </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
         <b-button @click="onExportCSVProduct()">
-          Export CSV
+          Ekspor CSV
         </b-button>
         <b-button @click="onExportPDFProduct()">
-          Export PDF
+          Ekspor PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
-        <b-button variant="primary" @click="onCreateProduct()">New Product</b-button>
+        <b-button variant="primary" @click="onCreateProduct()">Produk Baru</b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button variant="outline-secondary" @click="onDeleteProduct(product)">
-          {{ product.is_init ? 'Discard' : 'Delete Product' }}
+          {{ product.is_init ? 'Batalkan' : 'Hapus' }}
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button @click="onResetProduct">
-          Close
+          Tutup
         </b-button>
       </b-button-group>
     </ui-common-action>
-    <b-container :fluid="true">
+    <b-container :fluid="true" class="mb-4">
       <b-row class="mt-4">
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <product-list
               :objs="products"
               :fields="[
-                'numcode',
-                'name',
-                'username',
-                'stock',
-                'cogs',
-                'price',
-                'created'
+                {key: 'numcode', label: 'Kode Produk'},
+                {key: 'name', label: 'Nama'},
+                {key: 'username', label: 'Oleh'},
+                {key: 'stock', label: 'Stok Tersedia'},
+                {key: 'cogs', label: 'Harga Beli (Rp)'},
+                {key: 'price', label: 'Harga Jual (Rp)'},
+                {key: 'created_date', label: 'Dibuat'}
               ]"
               @take="onTakeProduct"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalProduct"
-            :currentPage="queryProduct.page"
-            @paginate="onPaginateProduct"
-          />
         </b-col>
         <b-col v-if="segmentA" cols="3">
-          <b-card header="Search Product">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Produk"
+          >
+            <p>
+              <small class="text-muted">
+                Cari produk berdasarkan kode produk, nama produk atau pembuat produk
+              </small>
+            </p>
             <ui-common-search @search="onSearchProduct" />
           </b-card>
-          <b-card class="mt-4" header="Filter Product by Date">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            header="Filter Produk dengan Tanggal"
+          >
+            <p>
+              <small class="text-muted">
+                Filter produk berdasarkan tanggal
+                dibuat dengan rentangan tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onFilterDateProduct" />
           </b-card>
         </b-col>
         <b-col v-if="segmentB" cols="6">
-          <b-card header="Edit Product">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Ubah Data Produk"
+          >
             <product-edit
               :obj="product"
               @edit="onEditProduct"

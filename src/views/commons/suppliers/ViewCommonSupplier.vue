@@ -1,63 +1,92 @@
 <template>
   <div>
-    <ui-common-header app="Supplier Manager" />
+    <ui-common-header app="Kelola Pemasok" />
     <ui-common-action>
       <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalSupplier"
+          :currentPage="querySupplier.page"
+          @paginate="onPaginateSupplier"
+        />
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
         <b-button @click="onExportCSVSupplier()">
-          Export CSV
+          Ekspor CSV
         </b-button>
         <b-button @click="onExportPDFSupplier()">
-          Export PDF
+          Ekspor PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
         <b-button variant="primary" @click="onCreateSupplier()">
-          New Supplier
+          Pemasok Baru
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button variant="outline-secondary" @click="onDeleteSupplier(supplier)">
-          {{ supplier.is_init ? 'Discard ' : 'Delete Supplier' }}
+          {{ supplier.is_init ? 'Batalkan' : 'Hapus' }}
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button @click="onResetSupplier">
-          Back
+          Tutup
         </b-button>
       </b-button-group>
     </ui-common-action>
     <b-container class="mb-4" :fluid="true">
       <b-row>
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <supplier-list
               :objs="suppliers"
               :fields="[
-                'numcode',
-                'name',
-                'phone',
-                'created'
+                {key: 'numcode', label: 'Kode Pemasok'},
+                {key: 'name', label: 'Nama'},
+                {key: 'phone', label: 'Nomer Telepon'},
+                {key: 'created_date', label: 'Dibuat'}
               ]"
               @take="onTakeSupplier"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalSupplier"
-            :currentPage="querySupplier.page"
-            @paginate="onPaginateSupplier"
-          />
         </b-col>
          <b-col v-if="segmentA" cols="3">
-          <b-card header="Search Supplier">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Pemasok"
+          >
+            <p>
+              <small class="text-muted">
+                Cari pemasok berdasarkan kode pemasok
+                atau nama pemasok
+              </small>
+            </p>
             <ui-common-search @search="onSearchSupplier" />
           </b-card>
-          <b-card class="mt-4" header="Filter Supplier by Date">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            header="Filter Pemasok dengan Tanggal"
+          >
+            <p>
+              <small class="text-muted">
+                Filter pemasok berdasarkan tanggal dibuat
+                dengan rentangan tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onFilterDateSupplier" />
           </b-card>
         </b-col>
         <b-col v-if="segmentB" cols="6">
-          <b-card header="Edit Supplier">
+          <b-card header="Ubah Data Pemasok">
             <supplier-edit
               :obj="supplier"
               @edit="onEditSupplier"

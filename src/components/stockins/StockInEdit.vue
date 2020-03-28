@@ -2,10 +2,11 @@
   <div>
     <div v-if="lodat">
       <div class="form-group">
-        <label>Stock In Date</label>
+        <label>Tanggal</label>
         <b-form-datepicker
           v-model="lodat.date"
           class="mb-2"
+          locale="id"
           @input="edit(lodat.id, 'date', lodat.date)"
         />
       </div>

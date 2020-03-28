@@ -1,18 +1,25 @@
 <template>
   <div>
-    <ui-common-header app="Stock Out Manager" />
+    <ui-common-header app="Kelola Transaksi Produk Keluar" />
     <ui-common-action>
       <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalStockOut"
+          :currentPage="queryStockOut.page"
+          @paginate="onPaginateStockOut"
+        />
+      </b-button-group>
+      <b-button-group size="sm" v-if="segmentA">
         <b-button @click="onExportCSVStockOut()">
-          Export CSV
+          Ekspor CSV
         </b-button>
         <b-button @click="onExportPDFStockOut()">
-          Export PDF
+           Ekspor PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentA">
         <b-button variant="primary" @click="onCreateStockOut()">
-          New Stock Out
+          Buat Transaksi Keluar
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
@@ -20,28 +27,28 @@
           v-if="!stockOut.is_calculate"
           @click="onCalculateStockOut(stockOut)"
         >
-          Stock Adjustment
+          Naikan Stok
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="!stockOut.is_calculate && stockOut.customer" @click="() => $refs['modalCreateCustomer'].show()">
-          Edit Customer
+          Ubah Pelanggan
         </b-button>
         <b-button v-if="!stockOut.is_calculate && stockOut.customer" @click="onEditStockOut(stockOut.id, 'supplier', null)">
-          Remove Customer
+          Hapus Pelanggan
         </b-button>
         <b-button v-if="!stockOut.is_calculate && !stockOut.customer" @click="onAllCustomer()">
-          Browse Customer
+          Cari Pelanggan
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="!stockOut.is_calculate" @click="onAllProduct()">
-          Browse Product
+          Cari Produk
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button v-if="stockOut.is_calculate" @click="onPrintPDFStockOut(stockOut)">
-          Save to PDF
+          Simpan ke PDF
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
@@ -51,83 +58,133 @@
           @click="onDeleteStockOut(stockOut)"
           title="Trash"
         >
-          To Trash
+          {{ stockOut.is_init ? 'Batalkan' : 'Hapus' }}
         </b-button>
       </b-button-group>
       <b-button-group size="sm" v-if="segmentB">
         <b-button
           @click="onAllStockOut()"
         >
-          Back
+          Tutup
         </b-button>
       </b-button-group>
     </ui-common-action>
-    <b-container :fluid="true">
+    <b-container :fluid="true" class="mb-4">
       <b-row class="mt-4">
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <stock-out-list
               :objs="stockOuts"
               :fields="[
-                'numcode',
-                'date',
-                'customer_name',
-                'customer_phone',
-                'is_calculate'
+                {key: 'numcode', label: 'Kode Transaksi'},
+                {key: 'date', label: 'Tanggal'},
+                {key: 'customer_name', label: 'Pelanggan'},
+                {key: 'customer_phone', label: 'Kontak Pelanggan'},
+                {key: 'is_calculate', label: 'Status Stok'}
               ]"
               @take="onTakeStockOut"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalStockOut"
-            :currentPage="queryStockOut.page"
-            @paginate="onPaginateStockOut"
-          />
         </b-col>
         <b-col v-if="segmentA" cols="3">
-          <b-card header="Search Stock Out">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Transaksi Produk Keluar"
+          >
+            <p>
+              <small class="text-muted">
+                Cari transaksi produk keluar berdasarkan kode transaksi,
+                nama pelanggan atau nama pembuat transaksi
+              </small>
+            </p>
             <ui-common-search @search="onSearchStockOut" />
           </b-card>
-          <b-card class="mt-4" header="Filter Stock Out by Date">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            header="Filter Transaksi Produk Keluar dengan Tanggal"
+          >
+            <p>
+              <small class="text-muted">
+                Filter transaksi produk keluar berdasarkan tanggal dibuat
+                dengan rentangan tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onDateFilterStockOut" />
           </b-card>
         </b-col>
         <b-col v-if="segmentB" cols="6">
-          <b-card v-if="!stockOut.is_calculate" header="Stock Out">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            v-if="!stockOut.is_calculate"
+            header="Ubah Data Transaksi Produk Keluar"
+          >
             <stock-out-edit
               :obj="stockOut"
               @edit="onEditStockOut"
             />
           </b-card>
-          <b-card no-body v-if="stockOut.is_calculate" header="Stock Out">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+            v-if="stockOut.is_calculate"
+            header="Transaksi Produk Keluar"
+          >
             <stock-out-detail
               :obj="stockOut"
               :fields="[
-                'numcode',
-                'date'
+                {key: 'numcode', label: 'Kode Transaksi'},
+                {key: 'date', label: 'Tanggal'}
               ]"
             />
           </b-card>
-          <b-card no-body class="mt-4" header="Customer">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+            class="mt-4"
+            header="Pelanggan"
+          >
             <customer-detail
               :fields="[
-                'numcode',
-                'name',
-                'phone',
-                'address'
+                {key: 'numcode', label: 'Kode Pelanggan'},
+                {key: 'name', label: 'Nama'},
+                {key: 'phone', label: 'Nomer Telepon'},
+                {key: 'address', label: 'Alamat'}
               ]"
               :obj="customer"
             />
           </b-card>
-          <b-card class="mt-4" no-body header="Items">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            class="mt-4"
+            no-body
+            header="Daftar Produk Terpilih"
+          >
             <b-row>
               <b-col>
                 <item-out-list
                   :objs="itemOuts"
                   :fields="[
-                    'product_name',
-                    'quantity'
+                    {key: 'product_name', label: 'Produk'},
+                    {key: 'product_stock', label: 'Stok Produk'},
+                    {key: 'quantity', label: 'Jumlah Stok Keluar'}
                   ]"
                   @take="onTakeItemOut"
                 />
@@ -140,7 +197,7 @@
     <!-- POPUP MODAL -->
     <b-modal
       ref="modalAllCustomer"
-      title="Customers"
+      title="Daftar Pelanggan"
       hide-header-close
       hide-footer
       size="lg"
@@ -151,25 +208,41 @@
         </b-col>
         <b-col cols="3">
           <b-button-group>
-            <b-button block @click="onCreateCustomer">
-              New Customer
+            <b-button
+              size="sm"
+              variant="primary"
+              block
+              @click="onCreateCustomer"
+            >
+              Pelanggan Baru
             </b-button>
           </b-button-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col cols="12">
-          <customer-list
-            :objs="customers"
-            :fields="['numcode', 'name', 'phone']"
-            @take="onTakeCustomer"
-          />
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
+            <customer-list
+              :objs="customers"
+              :fields="[
+                {key: 'numcode', label: 'Kode Pelanggan'},
+                {key: 'name', label: 'Nama'},
+                {key: 'phone', label: 'Nomer Telepon'}
+              ]"
+              @take="onTakeCustomer"
+            />
+          </b-card>
         </b-col>
       </b-row>
     </b-modal>
     <b-modal
       ref="modalCreateCustomer"
-      title="Customer"
+      title="Ubah Data Pelanggan"
       hide-header-close
       hide-footer
       size="lg"
@@ -185,13 +258,20 @@
     </b-modal>
     <b-modal
       ref="modalAllProduct"
-      title="Products"
+      title="Daftar Produk"
       hide-header-close
       hide-footer
       size="lg"
     >
       <b-row class="mb-4">
         <b-col cols="12">
+          <p>
+            <small class="text-muted">
+              Cari produk berdasarkan
+              kode produk, nama produk
+              atau pembuat produk
+            </small>
+          </p>
           <ui-common-search
             @search="onSearchProduct"
           />
@@ -199,36 +279,46 @@
       </b-row>
       <b-row>
         <b-col cols="12">
-          <product-list
-            :objs="products"
-            :fields="[
-              'numcode',
-              'name',
-              'cogs',
-              'price',
-              'stock'
-            ]"
-            @take="onTakeProduct"
-          />
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
+            <product-list
+              :objs="products"
+              :fields="[
+                {key: 'numcode', label: 'Kode Produk'},
+                {key: 'name', label: 'Nama'},
+                {key: 'stock', label: 'Stok Tersedia'},
+                {key: 'cogs', label: 'Harga Beli (Rp)'},
+                {key: 'price', label: 'Harga Jual (Rp)'}
+              ]"
+              @take="onTakeProduct"
+            />
+          </b-card>
         </b-col>
       </b-row>
     </b-modal>
     <b-modal
       ref="modalEditItemOut"
-      title="Item"
+      title="Ubah Data Produk Terpilih"
       hide-header-close
       hide-footer
       size="lg"
     >
       <b-row>
         <b-col>
-          <item-out-edit @edit="onEditItemOut" :obj="itemOut" />
+          <item-out-edit
+            @edit="onEditItemOut"
+            :obj="itemOut"
+          />
         </b-col>
       </b-row>
       <b-row>
         <b-col>
           <b-button-group>
-            <b-button @click="onDeleteItemOut(itemOut)">Delete</b-button>
+            <b-button @click="onDeleteItemOut(itemOut)">Hapus</b-button>
           </b-button-group>
         </b-col>
       </b-row>
@@ -509,6 +599,7 @@ export default {
     },
     async onAllProduct () {
       try {
+        this.setQuerySearchProduct(null)
         await this.allProduct()
         this.$refs['modalAllProduct'].show()
       } catch (error) {
