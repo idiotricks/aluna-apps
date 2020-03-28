@@ -2,46 +2,72 @@
   <div>
     <ui-common-header app="Kartu Stok" />
     <ui-common-action>
+      <b-button-group size="sm" v-if="segmentA">
+        <ui-common-pagination
+          :totalRows="totalStockCard"
+          :currentPage="queryStockCard.page"
+          @paginate="onPaginateStockCard"
+        />
+      </b-button-group>
       <b-button-group
         size="sm"
         v-if="segmentA"
       >
-        <b-button @click="onExportCSVStockCard">Export CSV</b-button>
-        <b-button @click="onExportPDFStockCard">Export PDF</b-button>
+        <b-button @click="onExportCSVStockCard">Ekspor CSV</b-button>
+        <b-button @click="onExportPDFStockCard">Ekspor PDF</b-button>
       </b-button-group>
     </ui-common-action>
     <b-container :fluid="true">
       <b-row>
         <b-col>
-          <b-card no-body>
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            no-body
+          >
             <stock-card-list
               :objs="stockCards"
               :fields="[
-                'numcode',
-                'date',
-                'product_name',
-                'init_balance',
-                'total_in',
-                'total_out',
-                'end_balance'
+                {key: 'numcode', label: 'Kode Transaksi'},
+                {key: 'date', label: 'Tanggal'},
+                {key: 'product_name', label: 'Produk'},
+                {key: 'init_balance', label: 'Saldo Awal'},
+                {key: 'total_in', label: 'Stok Masuk'},
+                {key: 'total_out', label: 'Stok Keluar'},
+                {key: 'end_balance', label: 'Saldo Akhir'}
               ]"
             />
           </b-card>
-          <ui-common-pagination
-            class="mt-4"
-            :totalRows="totalStockCard"
-            :currentPage="queryStockCard.page"
-            @paginate="onPaginateStockCard"
-          />
         </b-col>
         <b-col cols="3">
-          <b-card header="Pencarian Kartu Stok">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Pencarian Kartu Stok"
+          >
+            <p>
+              <small class="text-muted">
+                Cari kartu stok berdasarkan kode transaksi
+                atau nama produk
+              </small>
+            </p>
             <ui-common-search @search="onSearchStockCard" />
           </b-card>
           <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
             class="mt-4"
             header="Filter Kartu Stok dengan Tanggal"
           >
+            <p>
+              <small class="text-muted">
+                Filter kartu stok berdasarkan tanggal dibuat
+                dengan rentangan tanggal awal dan akhir
+              </small>
+            </p>
             <ui-common-date-filter @filter="onDateFilterStockCard" />
           </b-card>
         </b-col>
