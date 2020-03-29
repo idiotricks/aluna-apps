@@ -8,7 +8,12 @@
     </div>
     <div class="row d-flex justify-content-center">
       <div class="col-md-5">
-        <b-card header="Sign In">
+        <b-card
+          header-bg-variant="secondary"
+          header-text-variant="light"
+          border-variant="secondary"
+          header="Login Aplikasi Aluna"
+        >
           <user-signin @signIn="onSignInUser" />
         </b-card>
       </div>

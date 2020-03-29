@@ -8,7 +8,8 @@
       <label>Password</label>
       <input placeholder="Input your password" type="password" class="form-control" v-model="password" />
     </div>
-    <b-button @click="signIn" block variant="primary">Sign In</b-button>
+    <b-button @click="signIn" block variant="primary">Login</b-button>
+    <!-- <b-button @click="signIn" block variant="outline-primary">Buat Akun</b-button> -->
   </div>
 </template>
 

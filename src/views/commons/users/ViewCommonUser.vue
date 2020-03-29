@@ -4,7 +4,12 @@
     <b-container class="mb-4" :fluid="true">
       <b-row v-if="user" class="d-flex justify-content-center mt-4">
         <b-col cols="4">
-          <b-card header="Pengguna">
+          <b-card
+            header-bg-variant="secondary"
+            header-text-variant="light"
+            border-variant="secondary"
+            header="Ubah Data Pengguna"
+          >
             <user-edit :obj="user" @edit="onEditUser" />
           </b-card>
         </b-col>
